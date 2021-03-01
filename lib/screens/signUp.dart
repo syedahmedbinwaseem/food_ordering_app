@@ -45,10 +45,10 @@ class _SignupState extends State<Signup> {
                 height: width * 0.05,
               ),
               TextFormField(
-                keyboardType: TextInputType.emailAddress,
+                keyboardType: TextInputType.name,
                 textInputAction: TextInputAction.next,
                 style: TextStyle(fontFamily: 'Sofia'),
-                controller: email,
+                controller: name,
                 decoration: InputDecoration(
                   errorStyle: TextStyle(
                       fontFamily: 'Sofia', color: Colors.red, fontSize: 14),

@@ -12,6 +12,7 @@ class _LoginState extends State<Login> {
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
   bool isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
@@ -115,7 +116,7 @@ class _LoginState extends State<Login> {
                         fontWeight: FontWeight.bold),
                   ),
                 ),
-              )
+              ),
             ],
           ),
         ),

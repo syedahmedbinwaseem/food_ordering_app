@@ -1,4 +1,3 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:food_ordering_app/screens/login.dart';
 import 'package:food_ordering_app/screens/signUp.dart';
