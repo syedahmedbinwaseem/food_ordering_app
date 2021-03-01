@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:food_ordering_app/screens/homeScreen.dart';
+import 'package:food_ordering_app/screens/authScreen.dart';
 
 void main() {
   runApp(MyApp());
@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: HomePage(),
+      home: AuthScreen(),
     );
   }
 }
