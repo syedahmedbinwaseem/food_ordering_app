@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "222957213127",
+    "project_id": "foodie-f9c89",
+    "storage_bucket": "foodie-f9c89.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:222957213127:android:d1f1bb76d84e04401175e2",
+        "android_client_info": {
+          "package_name": "com.food_ordering_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "222957213127-dfb7n6l56u354k281cjbvkpng72ni5fs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBFWNONFqhegl0geUymZPZIRgxZ1tIVDQ4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "222957213127-dfb7n6l56u354k281cjbvkpng72ni5fs.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:222957213127:android:5c03f38a6979ef6a1175e2",
+        "android_client_info": {
+          "package_name": "com.food_ordering_app_admin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "222957213127-dfb7n6l56u354k281cjbvkpng72ni5fs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBFWNONFqhegl0geUymZPZIRgxZ1tIVDQ4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "222957213127-dfb7n6l56u354k281cjbvkpng72ni5fs.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

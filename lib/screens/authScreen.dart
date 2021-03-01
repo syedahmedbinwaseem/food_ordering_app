@@ -15,6 +15,7 @@ class _AuthScreenState extends State<AuthScreen> {
     var height =
         MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top;
     var density = height * width;
+
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -46,9 +47,11 @@ class _AuthScreenState extends State<AuthScreen> {
                   ),
                   child: TabBar(
                     labelColor: Colors.black,
+                    indicatorSize: TabBarIndicatorSize.tab,
+                    indicatorColor: darkGreen,
+                    indicatorWeight: height * 0.005,
                     labelStyle:
                         TextStyle(fontFamily: 'Sofia', fontSize: width * 0.05),
-                    indicatorColor: Colors.black,
                     tabs: [
                       Tab(
                         text: 'Login',

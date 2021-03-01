@@ -1,6 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:food_ordering_app/utils/colors.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:food_ordering_app/screens/signUp.dart';
+import 'package:food_ordering_app/user/localUser.dart';
+import 'package:food_ordering_app/screens/homeScreen.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -12,6 +18,101 @@ class _LoginState extends State<Login> {
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
   bool isLoading = false;
+  bool login;
+
+  void logIn() async {
+    setState(() {
+      isLoading = true;
+    });
+    try {
+      await FirebaseFirestore.instance
+          .doc("user/${email.text}")
+          .get()
+          .then((doc) async {
+        if (doc.exists) {
+          try {
+            // ignore: unused_local_variable
+            UserCredential user = await mauth.signInWithEmailAndPassword(
+                email: email.text, password: password.text);
+            setState(() {
+              login = true;
+            });
+            if (user != null) {
+              try {
+                DocumentSnapshot snap = await FirebaseFirestore.instance
+                    .collection("user")
+                    .doc(email.text)
+                    .get();
+                LocalUser.userData.firstName = snap['firstName'].toString();
+                LocalUser.userData.lastName = snap['lastName'].toString();
+                LocalUser.userData.email = snap['email'].toString();
+                LocalUser.userData.gender = snap['gender'].toString();
+                LocalUser.userData.phone = snap['phone'].toString();
+              } catch (e) {
+                print(e);
+              }
+            }
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => HomePage()),
+                (route) => false);
+          } on FirebaseAuthException catch (e) {
+            if (e.code == 'user-not-found') {
+              setState(() {
+                login = true;
+              });
+              Fluttertoast.showToast(
+                msg: "User not found for this email",
+                toastLength: Toast.LENGTH_LONG,
+                gravity: ToastGravity.BOTTOM,
+                timeInSecForIosWeb: 3,
+                backgroundColor: Colors.red[400],
+                textColor: Colors.white,
+                fontSize: 15,
+              );
+            } else if (e.code == 'wrong-password') {
+              setState(() {
+                login = true;
+              });
+              Fluttertoast.showToast(
+                msg: "Wrong password",
+                toastLength: Toast.LENGTH_LONG,
+                gravity: ToastGravity.BOTTOM,
+                timeInSecForIosWeb: 3,
+                backgroundColor: Colors.black,
+                textColor: Colors.white,
+                fontSize: 15,
+              );
+            }
+          } catch (e) {
+            print("Error: " + e);
+          }
+        } else {
+          setState(() {
+            login = true;
+          });
+
+          Fluttertoast.showToast(
+            msg: "User not found for this email",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 3,
+            backgroundColor: Colors.black,
+            textColor: Colors.white,
+            fontSize: 15,
+          );
+        }
+      });
+    } catch (e) {
+      setState(() {
+        login = true;
+      });
+      print(e);
+    }
+    setState(() {
+      isLoading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +127,7 @@ class _LoginState extends State<Login> {
         color: Colors.white,
       ),
       child: Form(
+        key: fKey,
         child: Padding(
           padding: const EdgeInsets.only(left: 15, right: 15),
           child: Column(
@@ -92,31 +194,36 @@ class _LoginState extends State<Login> {
               SizedBox(
                 height: width * 0.08,
               ),
-              FlatButton(
-                onPressed: () {
-                  // FocusScope.of(context).unfocus();
-                  if (fKey.currentState.validate()) {
-                    print(email.text);
-                    FocusScope.of(context).unfocus();
+              isLoading
+                  ? Center(
+                      child: CircularProgressIndicator(
+                        valueColor:
+                            new AlwaysStoppedAnimation<Color>(primaryGreen),
+                      ),
+                    )
+                  : FlatButton(
+                      onPressed: () {
+                        if (fKey.currentState.validate()) {
+                          print(email.text);
 
-                    // logIn();
-                  }
-                },
-                height: 40,
-                color: primaryGreen,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                child: Center(
-                  child: Text(
-                    'LOGIN',
-                    style: TextStyle(
-                        fontFamily: 'Sofia',
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ),
+                          logIn();
+                        }
+                      },
+                      height: 40,
+                      color: primaryGreen,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: Center(
+                        child: Text(
+                          'LOGIN',
+                          style: TextStyle(
+                              fontFamily: 'Sofia',
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ),
             ],
           ),
         ),
