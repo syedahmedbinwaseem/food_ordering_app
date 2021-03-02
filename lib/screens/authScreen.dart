@@ -5,6 +5,7 @@ import 'package:food_ordering_app/utils/colors.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 import 'package:tabbar/tabbar.dart';
 
+// ignore: must_be_immutable
 class AuthScreen extends StatefulWidget {
   int index;
   AuthScreen({@required this.index});
@@ -51,7 +52,7 @@ class _AuthScreenState extends State<AuthScreen> {
               child: Container(
                 decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(10)),
+                    borderRadius: BorderRadius.circular(20)),
                 child: Column(
                   children: [
                     TabBar(
