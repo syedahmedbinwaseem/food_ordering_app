@@ -32,67 +32,67 @@ class _SignupState extends State<Signup> {
       // ignore: unused_local_variable
       UserCredential user = await mauth.createUserWithEmailAndPassword(
           email: email.text, password: password.text);
-      User users = FirebaseAuth.instance.currentUser;
+      // User users = FirebaseAuth.instance.currentUser;
 
       setState(() {
         signUp = true;
       });
+      print(user.additionalUserInfo.username);
       if (user != null) {
-        try {
-          FirebaseFirestore.instance
-              .collection("user")
-              .doc("${email.text}")
-              .set({
-            'created_at': Timestamp.now(),
-            'firstName': fname.text,
-            'lastName': lname.text,
-            'email': email.text,
-            'gender': '',
-            'phone': '',
-            'walletAmount': 0
-          });
-        } catch (e) {
-          print('Error is: ' + e);
-        }
-      }
-      setState(() {
-        isLoading = false;
-      });
-      await showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text(
-                'Registered successfully!',
-                style: TextStyle(color: Colors.black, fontFamily: 'Sofia'),
-              ),
-              actions: <Widget>[
-                FlatButton(
-                  child: Text(
-                    "Continue",
-                    style: TextStyle(color: Colors.black, fontFamily: 'Sofia'),
-                  ),
-                  onPressed: () async {
-                    try {
-                      await FirebaseAuth.instance.signOut();
-                    } catch (e) {
-                      print(e);
-                    }
-                  },
+        FirebaseFirestore.instance.collection("user").doc("${email.text}").set({
+          'created_at': Timestamp.now(),
+          'firstName': fname.text,
+          'lastName': lname.text,
+          'email': email.text,
+          'gender': '',
+          'phone': '',
+          'walletAmount': 0
+        });
+        setState(() {
+          isLoading = false;
+        });
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text(
+                  'Registered successfully!',
+                  style: TextStyle(color: Colors.black, fontFamily: 'Sofia'),
                 ),
-              ],
-            );
-          }).then((value) async {
-        try {
-          await FirebaseAuth.instance.signOut();
-        } catch (e) {
-          print(e);
-        }
-        Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(builder: (context) => AuthScreen(index: 0)),
-            (route) => false);
-      });
+                actions: <Widget>[
+                  FlatButton(
+                    child: Text(
+                      "Continue",
+                      style:
+                          TextStyle(color: Colors.black, fontFamily: 'Sofia'),
+                    ),
+                    onPressed: () async {
+                      try {
+                        await FirebaseAuth.instance.signOut();
+                        Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => AuthScreen(index: 0)),
+                            (route) => false);
+                      } catch (e) {
+                        print(e);
+                      }
+                    },
+                  ),
+                ],
+              );
+            }).then((value) async {
+          try {
+            await FirebaseAuth.instance.signOut();
+          } catch (e) {
+            print(e);
+          }
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => AuthScreen(index: 0)),
+              (route) => false);
+        });
+      }
       fname.clear();
       lname.clear();
       email.clear();
@@ -115,6 +115,7 @@ class _SignupState extends State<Signup> {
 
   @override
   Widget build(BuildContext context) {
+    // create();
     var width = MediaQuery.of(context).size.width;
     var height =
         MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top;
