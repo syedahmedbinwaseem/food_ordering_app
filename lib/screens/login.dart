@@ -7,6 +7,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:food_ordering_app/screens/signUp.dart';
 import 'package:food_ordering_app/user/localUser.dart';
 import 'package:food_ordering_app/screens/homeScreen.dart';
+import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -120,111 +121,111 @@ class _LoginState extends State<Login> {
     var height =
         MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top;
 
-    return Container(
-      height: height * 0.75,
-      width: MediaQuery.of(context).size.width,
-      decoration: BoxDecoration(
-        color: Colors.white,
-      ),
-      child: Form(
-        key: fKey,
-        child: Padding(
-          padding: const EdgeInsets.only(left: 15, right: 15),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                height: width * 0.05,
-              ),
-              Text(
-                'Login to account',
-                style: TextStyle(
-                  fontSize: width * 0.07,
-                  fontFamily: 'Sofia',
-                ),
-              ),
-              SizedBox(
-                height: width * 0.05,
-              ),
-              TextFormField(
-                keyboardType: TextInputType.emailAddress,
-                textInputAction: TextInputAction.next,
-                style: TextStyle(fontFamily: 'Sofia'),
-                validator: (value) {
-                  return value.isEmpty
-                      ? 'Email is required'
-                      : validateEmail(value) == 1
-                          ? 'Invalid email'
-                          : null;
-                },
-                controller: email,
-                decoration: InputDecoration(
-                  errorStyle: TextStyle(
-                      fontFamily: 'Sofia', color: Colors.red, fontSize: 14),
-                  labelText: 'Email',
-                  labelStyle: TextStyle(
-                      fontFamily: 'Sofia', color: Colors.black, fontSize: 14),
-                ),
-              ),
-              TextFormField(
-                obscureText: true,
-                style: TextStyle(fontFamily: 'Sofia'),
-                validator: (value) {
-                  return value.isEmpty ? 'Password is required' : null;
-                },
-                controller: password,
-                decoration: InputDecoration(
-                  errorStyle: TextStyle(
-                      fontFamily: 'Sofia', color: Colors.red, fontSize: 14),
-                  labelText: 'Password',
-                  labelStyle: TextStyle(
-                      fontFamily: 'Sofia', color: Colors.black, fontSize: 14),
-                ),
-              ),
-              SizedBox(
-                height: width * 0.05,
-              ),
-              Align(
-                alignment: Alignment.centerRight,
-                child: Text(
-                  'Forgot password?',
-                  style: TextStyle(color: primaryGreen, fontFamily: 'Sofia'),
-                ),
-              ),
-              SizedBox(
-                height: width * 0.08,
-              ),
-              isLoading
-                  ? Center(
-                      child: CircularProgressIndicator(
-                        valueColor:
-                            new AlwaysStoppedAnimation<Color>(primaryGreen),
-                      ),
-                    )
-                  : FlatButton(
-                      onPressed: () {
-                        if (fKey.currentState.validate()) {
-                          print(email.text);
+    return ModalProgressHUD(
+      opacity: 0.1,
+      inAsyncCall: isLoading,
+      child: Container(
+        height: height * 0.75,
+        width: MediaQuery.of(context).size.width,
+        decoration: BoxDecoration(
+          color: Colors.white,
+        ),
+        child: Form(
+          key: fKey,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 15, right: 15),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 30),
+                  Text(
+                    'Login to account',
+                    style: TextStyle(
+                      fontSize: width * 0.07,
+                      fontFamily: 'Sofia',
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  TextFormField(
+                    keyboardType: TextInputType.emailAddress,
+                    textInputAction: TextInputAction.next,
+                    style: TextStyle(fontFamily: 'Sofia'),
+                    validator: (value) {
+                      return value.isEmpty
+                          ? 'Email is required'
+                          : validateEmail(value) == 1
+                              ? 'Invalid email'
+                              : null;
+                    },
+                    controller: email,
+                    decoration: InputDecoration(
+                      errorStyle: TextStyle(
+                          fontFamily: 'Sofia', color: Colors.red, fontSize: 14),
+                      labelText: 'Email',
+                      labelStyle: TextStyle(
+                          fontFamily: 'Sofia',
+                          color: Colors.black,
+                          fontSize: 14),
+                    ),
+                  ),
+                  TextFormField(
+                    obscureText: true,
+                    style: TextStyle(fontFamily: 'Sofia'),
+                    validator: (value) {
+                      return value.isEmpty ? 'Password is required' : null;
+                    },
+                    controller: password,
+                    decoration: InputDecoration(
+                      errorStyle: TextStyle(
+                          fontFamily: 'Sofia', color: Colors.red, fontSize: 14),
+                      labelText: 'Password',
+                      labelStyle: TextStyle(
+                          fontFamily: 'Sofia',
+                          color: Colors.black,
+                          fontSize: 14),
+                    ),
+                  ),
+                  SizedBox(
+                    height: width * 0.05,
+                  ),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: Text(
+                      'Forgot password?',
+                      style:
+                          TextStyle(color: primaryGreen, fontFamily: 'Sofia'),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  FlatButton(
+                    onPressed: () {
+                      if (fKey.currentState.validate()) {
+                        print(email.text);
 
-                          logIn();
-                        }
-                      },
-                      height: 40,
-                      color: primaryGreen,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      child: Center(
-                        child: Text(
-                          'LOGIN',
-                          style: TextStyle(
-                              fontFamily: 'Sofia',
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold),
-                        ),
+                        logIn();
+                      }
+                    },
+                    height: 40,
+                    color: primaryGreen,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: Center(
+                      child: Text(
+                        'LOGIN',
+                        style: TextStyle(
+                            fontFamily: 'Sofia',
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold),
                       ),
                     ),
-            ],
+                  ),
+                ],
+              ),
+            ),
           ),
         ),
       ),

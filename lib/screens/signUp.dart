@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:food_ordering_app/screens/authScreen.dart';
 
 import 'package:food_ordering_app/utils/colors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 final FirebaseAuth mauth = FirebaseAuth.instance;
 
@@ -47,6 +49,7 @@ class _SignupState extends State<Signup> {
             'email': email.text,
             'gender': '',
             'phone': '',
+            'walletAmount': 0
           });
         } catch (e) {
           print('Error is: ' + e);
@@ -61,13 +64,13 @@ class _SignupState extends State<Signup> {
             return AlertDialog(
               title: Text(
                 'Registered successfully!',
-                style: TextStyle(color: Colors.black, fontFamily: 'Segoe'),
+                style: TextStyle(color: Colors.black, fontFamily: 'Sofia'),
               ),
               actions: <Widget>[
                 FlatButton(
                   child: Text(
                     "Continue",
-                    style: TextStyle(color: Colors.black, fontFamily: 'Segoe'),
+                    style: TextStyle(color: Colors.black, fontFamily: 'Sofia'),
                   ),
                   onPressed: () async {
                     try {
@@ -75,7 +78,6 @@ class _SignupState extends State<Signup> {
                     } catch (e) {
                       print(e);
                     }
-                    Navigator.of(context).pop();
                   },
                 ),
               ],
@@ -86,6 +88,10 @@ class _SignupState extends State<Signup> {
         } catch (e) {
           print(e);
         }
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => AuthScreen(index: 0)),
+            (route) => false);
       });
       fname.clear();
       lname.clear();
@@ -113,127 +119,148 @@ class _SignupState extends State<Signup> {
     var height =
         MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top;
 
-    return SingleChildScrollView(
-      child: Container(
-        height: height * 0.75,
-        width: width,
-        decoration: BoxDecoration(
-          color: Colors.white,
-        ),
-        child: Form(
-          key: fKey,
-          child: Padding(
-            padding: const EdgeInsets.only(left: 15, right: 15),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  height: width * 0.05,
-                ),
-                Text(
-                  'Create an account',
-                  style: TextStyle(
-                    fontSize: width * 0.07,
-                    fontFamily: 'Sofia',
-                  ),
-                ),
-                SizedBox(
-                  height: width * 0.05,
-                ),
-                TextFormField(
-                  keyboardType: TextInputType.name,
-                  textInputAction: TextInputAction.next,
-                  style: TextStyle(fontFamily: 'Sofia'),
-                  controller: fname,
-                  decoration: InputDecoration(
-                    errorStyle: TextStyle(
-                        fontFamily: 'Sofia', color: Colors.red, fontSize: 14),
-                    labelText: 'First Name',
-                    labelStyle: TextStyle(
-                        fontFamily: 'Sofia', color: Colors.black, fontSize: 14),
-                  ),
-                ),
-                TextFormField(
-                  keyboardType: TextInputType.name,
-                  textInputAction: TextInputAction.next,
-                  style: TextStyle(fontFamily: 'Sofia'),
-                  controller: lname,
-                  decoration: InputDecoration(
-                    errorStyle: TextStyle(
-                        fontFamily: 'Sofia', color: Colors.red, fontSize: 14),
-                    labelText: 'Last Name',
-                    labelStyle: TextStyle(
-                        fontFamily: 'Sofia', color: Colors.black, fontSize: 14),
-                  ),
-                ),
-                TextFormField(
-                  keyboardType: TextInputType.emailAddress,
-                  textInputAction: TextInputAction.next,
-                  style: TextStyle(fontFamily: 'Sofia'),
-                  validator: (value) {
-                    return value.isEmpty
-                        ? 'Email is required'
-                        : validateEmail(value) == 1
-                            ? 'Invalid email'
-                            : null;
-                  },
-                  controller: email,
-                  decoration: InputDecoration(
-                    errorStyle: TextStyle(
-                        fontFamily: 'Sofia', color: Colors.red, fontSize: 14),
-                    labelText: 'Email',
-                    labelStyle: TextStyle(
-                        fontFamily: 'Sofia', color: Colors.black, fontSize: 14),
-                  ),
-                ),
-                TextFormField(
-                  obscureText: true,
-                  style: TextStyle(fontFamily: 'Sofia'),
-                  validator: (value) {
-                    return value.isEmpty ? 'Password is required' : null;
-                  },
-                  controller: password,
-                  decoration: InputDecoration(
-                    errorStyle: TextStyle(
-                        fontFamily: 'Sofia', color: Colors.red, fontSize: 14),
-                    labelText: 'Password',
-                    labelStyle: TextStyle(
-                        fontFamily: 'Sofia', color: Colors.black, fontSize: 14),
-                  ),
-                ),
-                SizedBox(
-                  height: width * 0.08,
-                ),
-                isLoading
-                    ? Center(
-                        child: CircularProgressIndicator(
-                          valueColor:
-                              new AlwaysStoppedAnimation<Color>(primaryGreen),
+    return ModalProgressHUD(
+      inAsyncCall: isLoading,
+      child: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).unfocus();
+        },
+        child: Container(
+          height: height,
+          width: width,
+          decoration: BoxDecoration(
+            color: Colors.white,
+          ),
+          child: Form(
+            key: fKey,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 15, right: 15),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 30),
+                    Text(
+                      'Create an account',
+                      style: TextStyle(
+                        fontSize: width * 0.07,
+                        fontFamily: 'Sofia',
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    TextFormField(
+                      textCapitalization: TextCapitalization.sentences,
+                      keyboardType: TextInputType.name,
+                      textInputAction: TextInputAction.next,
+                      style: TextStyle(fontFamily: 'Sofia'),
+                      controller: fname,
+                      validator: (value) {
+                        return value.isEmpty ? 'First name is required' : null;
+                      },
+                      decoration: InputDecoration(
+                        errorStyle: TextStyle(
+                            fontFamily: 'Sofia',
+                            color: Colors.red,
+                            fontSize: 14),
+                        labelText: 'First Name',
+                        labelStyle: TextStyle(
+                            fontFamily: 'Sofia',
+                            color: Colors.black,
+                            fontSize: 14),
+                      ),
+                    ),
+                    TextFormField(
+                      textCapitalization: TextCapitalization.sentences,
+                      keyboardType: TextInputType.name,
+                      textInputAction: TextInputAction.next,
+                      style: TextStyle(fontFamily: 'Sofia'),
+                      controller: lname,
+                      validator: (value) {
+                        return value.isEmpty ? 'Last name is required' : null;
+                      },
+                      decoration: InputDecoration(
+                        errorStyle: TextStyle(
+                            fontFamily: 'Sofia',
+                            color: Colors.red,
+                            fontSize: 14),
+                        labelText: 'Last Name',
+                        labelStyle: TextStyle(
+                            fontFamily: 'Sofia',
+                            color: Colors.black,
+                            fontSize: 14),
+                      ),
+                    ),
+                    TextFormField(
+                      keyboardType: TextInputType.emailAddress,
+                      textInputAction: TextInputAction.next,
+                      style: TextStyle(fontFamily: 'Sofia'),
+                      validator: (value) {
+                        return value.isEmpty
+                            ? 'Email is required'
+                            : validateEmail(value) == 1
+                                ? 'Invalid email'
+                                : null;
+                      },
+                      controller: email,
+                      decoration: InputDecoration(
+                        errorStyle: TextStyle(
+                            fontFamily: 'Sofia',
+                            color: Colors.red,
+                            fontSize: 14),
+                        labelText: 'Email',
+                        labelStyle: TextStyle(
+                            fontFamily: 'Sofia',
+                            color: Colors.black,
+                            fontSize: 14),
+                      ),
+                    ),
+                    TextFormField(
+                      obscureText: true,
+                      style: TextStyle(fontFamily: 'Sofia'),
+                      validator: (value) {
+                        return value.isEmpty ? 'Password is required' : null;
+                      },
+                      controller: password,
+                      decoration: InputDecoration(
+                        errorStyle: TextStyle(
+                            fontFamily: 'Sofia',
+                            color: Colors.red,
+                            fontSize: 14),
+                        labelText: 'Password',
+                        labelStyle: TextStyle(
+                            fontFamily: 'Sofia',
+                            color: Colors.black,
+                            fontSize: 14),
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    FlatButton(
+                      onPressed: () async {
+                        if (fKey.currentState.validate()) {
+                          print(email.text);
+                          signup();
+                        }
+                      },
+                      height: 40,
+                      color: primaryGreen,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: Center(
+                        child: Text(
+                          'REGISTER',
+                          style: TextStyle(
+                              fontFamily: 'Sofia',
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold),
                         ),
-                      )
-                    : FlatButton(
-                        onPressed: () async {
-                          if (fKey.currentState.validate()) {
-                            print(email.text);
-                            signup();
-                          }
-                        },
-                        height: 40,
-                        color: primaryGreen,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: Center(
-                          child: Text(
-                            'REGISTER',
-                            style: TextStyle(
-                                fontFamily: 'Sofia',
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      )
-              ],
+                      ),
+                    )
+                  ],
+                ),
+              ),
             ),
           ),
         ),
