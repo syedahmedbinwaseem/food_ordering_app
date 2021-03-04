@@ -9,4 +9,5 @@ class LocalUser {
   String email;
   String gender;
   String phone;
+  int walletAmount;
 }
