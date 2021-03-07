@@ -1,10 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:food_ordering_app/user/localUser.dart';
 import 'package:food_ordering_app/utils/animatedNumber.dart';
 import 'package:food_ordering_app/utils/colors.dart';
-import 'package:number_slide_animation/number_slide_animation.dart';
 
 class Wallet extends StatefulWidget {
   @override
@@ -13,18 +11,11 @@ class Wallet extends StatefulWidget {
 
 class _WalletState extends State<Wallet> {
   void geta() async {
-    DocumentSnapshot snap = await FirebaseFirestore.instance
-        .collection('user')
-        .doc('syedahmedbinwaseem@gmail.com')
-        .get();
-
-    print(snap['email']);
     await FirebaseAuth.instance.signOut();
   }
 
   @override
   Widget build(BuildContext context) {
-    print(LocalUser.userData.email);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -62,9 +53,9 @@ class _WalletState extends State<Wallet> {
                 child: AnimatedFlipCounter(
               duration: Duration(milliseconds: 500),
               value: snapshot.data['walletAmount'],
-              
+
               /* pass in a number like 2014 */
-              color: Colors.black,
+              color: blue,
               size: 100,
             )),
           );

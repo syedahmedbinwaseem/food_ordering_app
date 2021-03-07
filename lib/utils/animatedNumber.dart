@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:food_ordering_app/utils/colors.dart';
 
 class AnimatedFlipCounter extends StatelessWidget {
   final int value;
@@ -13,7 +12,7 @@ class AnimatedFlipCounter extends StatelessWidget {
     @required this.value,
     @required this.duration,
     this.size = 72,
-    this.color = Colors.black,
+    @required this.color,
   }) : super(key: key);
 
   @override
@@ -101,7 +100,7 @@ class _SingleDigitFlipCounter extends StatelessWidget {
           child: Text(
             "$digit",
             style:
-                TextStyle(fontSize: height, color: blue, fontFamily: 'Sofia'),
+                TextStyle(fontSize: height, color: color, fontFamily: 'Sofia'),
             textAlign: TextAlign.center,
           ),
         ),

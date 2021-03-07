@@ -7,20 +7,33 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:food_ordering_app/screens/signUp.dart';
 import 'package:food_ordering_app/user/localUser.dart';
-import 'package:food_ordering_app/screens/homeScreen.dart';
-import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:food_ordering_app/utils/toast.dart';
 
+// ignore: must_be_immutable
 class Login extends StatefulWidget {
+  double padding;
+  Login({this.padding});
   @override
   _LoginState createState() => _LoginState();
 }
 
 class _LoginState extends State<Login> {
   GlobalKey<FormState> fKey = GlobalKey<FormState>();
+  GlobalKey<FormState> fKey1 = GlobalKey<FormState>();
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
+  TextEditingController forgot = TextEditingController();
+  FToast fToast;
   bool isLoading = false;
   bool login;
+  bool isLoadingForgot = false;
+  bool showPass = true;
+
+  void toggle() {
+    setState(() {
+      showPass = !showPass;
+    });
+  }
 
   void logIn() async {
     setState(() {
@@ -57,7 +70,11 @@ class _LoginState extends State<Login> {
             }
             Navigator.pushAndRemoveUntil(
                 context,
-                MaterialPageRoute(builder: (context) => BottomNavigator()),
+                MaterialPageRoute(
+                    builder: (context) => BottomNavigator(
+                          fName: LocalUser.userData.firstName,
+                          gender: LocalUser.userData.gender,
+                        )),
                 (route) => false);
           } on FirebaseAuthException catch (e) {
             if (e.code == 'user-not-found') {
@@ -118,11 +135,17 @@ class _LoginState extends State<Login> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    fToast = FToast();
+    fToast.init(context);
+  }
+
+  @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
     var height =
         MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top;
-
     return Stack(
       children: [
         GestureDetector(
@@ -178,42 +201,78 @@ class _LoginState extends State<Login> {
                               fontSize: 14),
                         ),
                       ),
-                      TextFormField(
-                        obscureText: true,
-                        style: TextStyle(fontFamily: 'Sofia'),
-                        validator: (value) {
-                          return value.isEmpty ? 'Password is required' : null;
-                        },
-                        controller: password,
-                        decoration: InputDecoration(
-                          errorStyle: TextStyle(
-                              fontFamily: 'Sofia',
-                              color: Colors.red,
-                              fontSize: 14),
-                          labelText: 'Password',
-                          labelStyle: TextStyle(
-                              fontFamily: 'Sofia',
-                              color: Colors.black,
-                              fontSize: 14),
-                        ),
+                      Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          TextFormField(
+                            obscureText: showPass,
+                            style: TextStyle(fontFamily: 'Sofia'),
+                            validator: (value) {
+                              return value.isEmpty
+                                  ? 'Password is required'
+                                  : null;
+                            },
+                            controller: password,
+                            decoration: InputDecoration(
+                              errorStyle: TextStyle(
+                                  fontFamily: 'Sofia',
+                                  color: Colors.red,
+                                  fontSize: 14),
+                              labelText: 'Password',
+                              labelStyle: TextStyle(
+                                  fontFamily: 'Sofia',
+                                  color: Colors.black,
+                                  fontSize: 14),
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: toggle,
+                            child: Align(
+                              alignment: Alignment.centerRight,
+                              child: showPass
+                                  ? Icon(
+                                      Icons.visibility_off,
+                                      size: 18,
+                                      color: primaryGreen,
+                                    )
+                                  : Icon(
+                                      Icons.visibility,
+                                      size: 18,
+                                      color: primaryGreen,
+                                    ),
+                            ),
+                          )
+                        ],
                       ),
                       SizedBox(
                         height: width * 0.05,
                       ),
                       Align(
                         alignment: Alignment.centerRight,
-                        child: Text(
-                          'Forgot password?',
-                          style: TextStyle(
-                              color: primaryGreen, fontFamily: 'Sofia'),
+                        child: GestureDetector(
+                          onTap: () {
+                            // FocusScope.of(context).requestFocus(FocusNode());
+                            FocusScope.of(context).unfocus();
+                            generateBottomSheet(context, widget.padding);
+                            // Navigator.push(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //         builder: (context) => FogotPassword()));
+                          },
+                          child: Hero(
+                            tag: 'forgot',
+                            child: Text(
+                              'Forgot password?',
+                              style: TextStyle(
+                                  color: primaryGreen, fontFamily: 'Sofia'),
+                            ),
+                          ),
                         ),
                       ),
                       SizedBox(height: 20),
                       FlatButton(
                         onPressed: () {
                           if (fKey.currentState.validate()) {
-                            print(email.text);
-
                             logIn();
                           }
                         },
@@ -257,6 +316,150 @@ class _LoginState extends State<Login> {
             : Container(),
       ],
     );
+  }
+
+  generateBottomSheet(conext, double padding) {
+    // FocusScope.of(context).unfocus();
+    showModalBottomSheet(
+        isScrollControlled: true,
+
+        // isScrollControlled: true,
+        context: context,
+        builder: (context) {
+          return StatefulBuilder(
+            builder: (context, setState) {
+              return AnimatedPadding(
+                  padding: MediaQuery.of(context).viewInsets,
+                  duration: const Duration(milliseconds: 100),
+                  curve: Curves.decelerate,
+                  child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                      ),
+                      padding: const EdgeInsets.only(
+                          left: 15, right: 15, top: 30, bottom: 20),
+                      child: Form(
+                        key: fKey1,
+                        child: Wrap(
+                          spacing: 20,
+                          children: [
+                            Text(
+                              'Forgot Password',
+                              style: TextStyle(
+                                fontSize:
+                                    MediaQuery.of(context).size.width * 0.07,
+                                fontFamily: 'Sofia',
+                              ),
+                            ),
+                            TextFormField(
+                              keyboardType: TextInputType.emailAddress,
+                              textInputAction: TextInputAction.done,
+                              style: TextStyle(fontFamily: 'Sofia'),
+                              validator: (value) {
+                                return value.isEmpty
+                                    ? 'Email is required'
+                                    : validateEmail(value) == 1
+                                        ? 'Invalid email'
+                                        : null;
+                              },
+                              controller: forgot,
+                              decoration: InputDecoration(
+                                errorStyle: TextStyle(
+                                    fontFamily: 'Sofia',
+                                    color: Colors.red,
+                                    fontSize: 14),
+                                labelText: 'Email',
+                                labelStyle: TextStyle(
+                                    fontFamily: 'Sofia',
+                                    color: Colors.black,
+                                    fontSize: 14),
+                              ),
+                            ),
+                            SizedBox(height: 30),
+                            FlatButton(
+                              onPressed: () async {
+                                if (fKey1.currentState.validate()) {
+                                  try {
+                                    setState(() {
+                                      isLoadingForgot = true;
+                                    });
+                                    final FirebaseAuth _firebaseAuth =
+                                        FirebaseAuth.instance;
+                                    await _firebaseAuth.sendPasswordResetEmail(
+                                        email: forgot.text.toString());
+                                    fToast.showToast(
+                                      child: ToastWidget.toast(
+                                          'Password reset link sent on your email',
+                                          Icon(Icons.done, size: 20)),
+                                      toastDuration: Duration(seconds: 2),
+                                      gravity: ToastGravity.BOTTOM,
+                                    );
+
+                                    setState(() {
+                                      isLoadingForgot = false;
+                                    });
+                                    Navigator.pop(context);
+                                  } catch (e) {
+                                    Navigator.pop(context);
+
+                                    setState(() {
+                                      isLoadingForgot = false;
+                                    });
+                                    if (e.code == 'too-many-requests') {
+                                      fToast.showToast(
+                                        child: ToastWidget.toast(
+                                            'You are trying too often. Please try again later',
+                                            Icon(Icons.error, size: 20)),
+                                        toastDuration: Duration(seconds: 2),
+                                        gravity: ToastGravity.BOTTOM,
+                                      );
+                                    } else {
+                                      fToast.showToast(
+                                        child: ToastWidget.toast(
+                                            'Operation failed. Try again later',
+                                            Icon(Icons.error, size: 20)),
+                                        toastDuration: Duration(seconds: 2),
+                                        gravity: ToastGravity.BOTTOM,
+                                      );
+                                    }
+                                  }
+                                }
+                              },
+                              height: 40,
+                              color: primaryGreen,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              child: Center(
+                                child: isLoadingForgot == true
+                                    ? Container(
+                                        height: 40,
+                                        width: 40,
+                                        padding: EdgeInsets.all(10),
+                                        child: CircularProgressIndicator(
+                                          valueColor:
+                                              AlwaysStoppedAnimation<Color>(
+                                                  Colors.white),
+                                        ),
+                                      )
+                                    : Text(
+                                        'RESET',
+                                        style: TextStyle(
+                                            fontFamily: 'Sofia',
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      )));
+            },
+          );
+        }).then((value) {
+      forgot.clear();
+      FocusScope.of(context).unfocus();
+    });
   }
 }
 

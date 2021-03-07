@@ -7,13 +7,24 @@ import 'package:food_ordering_app/screens/wallet.dart';
 import 'package:food_ordering_app/utils/colors.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
+// ignore: must_be_immutable
 class BottomNavigator extends StatelessWidget {
-  BottomNavigator({Key key}) : super(key: key);
+  String fName;
+  String gender;
+  BottomNavigator({Key key, this.fName, this.gender}) : super(key: key);
   final PersistentTabController _controller =
       PersistentTabController(initialIndex: 0);
 
   List<Widget> _buildScreens() {
-    return [HomePage(), Cart(), Wallet(), Profile()];
+    return [
+      HomePage(
+        name: fName,
+        gender: gender,
+      ),
+      Cart(),
+      Wallet(),
+      Profile()
+    ];
   }
 
   List<PersistentBottomNavBarItem> _navBarsItems() {

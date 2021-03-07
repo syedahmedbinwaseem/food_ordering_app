@@ -1,11 +1,9 @@
-import 'dart:async';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:food_ordering_app/screens/authScreen.dart';
 import 'package:food_ordering_app/screens/bottomNavigator.dart';
-import 'package:food_ordering_app/screens/login.dart';
 import 'package:food_ordering_app/utils/colors.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -23,8 +21,15 @@ class _SplashScreenState extends State<SplashScreen> {
                   index: 0,
                 )));
       } else {
-        Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => BottomNavigator()));
+        DocumentSnapshot snap = await FirebaseFirestore.instance
+            .collection('user')
+            .doc(user.email)
+            .get();
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (context) => BottomNavigator(
+                  fName: snap['firstName'],
+                  gender: snap['gender'],
+                )));
       }
     });
   }
@@ -32,7 +37,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Timer(Duration(seconds: 2), getUser);
+    getUser();
   }
 
   @override
