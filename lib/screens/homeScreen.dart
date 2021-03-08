@@ -2,7 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:food_ordering_app/screens/allProducts.dart';
 import 'package:food_ordering_app/screens/productScreen.dart';
+import 'package:food_ordering_app/user/localUser.dart';
 import 'package:food_ordering_app/utils/colors.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 
@@ -10,17 +12,19 @@ import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 class HomePage extends StatefulWidget {
   String name;
   String gender;
-  HomePage({@required this.name, @required this.gender});
+  DocumentSnapshot user;
+  HomePage({@required this.name, @required this.gender, this.user});
   @override
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   ScrollController _scrollController = ScrollController();
   String dropdownValue;
   List categories = [];
   String categoryName;
   List<Widget> tabs = [];
+  TabController _tabController;
   void getCat() async {
     DocumentSnapshot snap = await FirebaseFirestore.instance
         .collection('products')
@@ -38,6 +42,8 @@ class _HomePageState extends State<HomePage> {
         child: Text(element),
       ));
     });
+
+    _tabController = new TabController(vsync: this, length: categories.length);
   }
 
   int selectedIndex = 0;
@@ -101,14 +107,37 @@ class _HomePageState extends State<HomePage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            'Hello, ${widget.name}',
-                            style: TextStyle(
-                                fontFamily: 'Sofia',
-                                fontSize:
-                                    MediaQuery.of(context).size.width * 0.0549,
-                                fontWeight: FontWeight.w100,
-                                color: darkGreen),
+                          StreamBuilder(
+                            stream: FirebaseFirestore.instance
+                                .collection('user')
+                                .doc(LocalUser.userData.email)
+                                .snapshots(),
+                            builder: (context,
+                                AsyncSnapshot<DocumentSnapshot> snapshot) {
+                              return !snapshot.hasData
+                                  ? Text(
+                                      'Loading',
+                                      style: TextStyle(
+                                          fontFamily: 'Sofia',
+                                          fontSize: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.0549,
+                                          fontWeight: FontWeight.w100,
+                                          color: darkGreen),
+                                    )
+                                  : Text(
+                                      'Hello, ${snapshot.data['firstName']}',
+                                      style: TextStyle(
+                                          fontFamily: 'Sofia',
+                                          fontSize: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.0549,
+                                          fontWeight: FontWeight.w100,
+                                          color: darkGreen),
+                                    );
+                            },
                           ),
                           SizedBox(height: 7),
                           Text(
@@ -199,6 +228,8 @@ class _HomePageState extends State<HomePage> {
                                 children: [
                                   Container(
                                     child: TabBar(
+                                        controller: _tabController,
+                                        isScrollable: true,
                                         labelStyle: TextStyle(
                                           fontFamily: 'Sofia',
                                           fontWeight: FontWeight.bold,
@@ -215,6 +246,7 @@ class _HomePageState extends State<HomePage> {
                                   Container(
                                     height: 340,
                                     child: TabBarView(
+                                      controller: _tabController,
                                       physics: NeverScrollableScrollPhysics(),
                                       children: List<Widget>.generate(
                                           categories.length, (index) {
@@ -259,16 +291,12 @@ class _HomePageState extends State<HomePage> {
                                                                       return GestureDetector(
                                                                         onTap:
                                                                             () {
-                                                                          print(
-                                                                              'tap');
                                                                           Navigator.of(context, rootNavigator: true)
                                                                               .push(MaterialPageRoute(builder: (context) => ProductScreen(product: snapshot.data.docs[index])));
                                                                         },
                                                                         child: Padding(
                                                                             padding: const EdgeInsets.all(8.0),
                                                                             child: Container(
-                                                                                // height: 200,
-                                                                                // width: 220,
                                                                                 decoration: BoxDecoration(
                                                                                   color: primaryGreen.withOpacity(0.3),
                                                                                   borderRadius: BorderRadius.circular(15),
@@ -281,25 +309,28 @@ class _HomePageState extends State<HomePage> {
                                                                                       SizedBox(height: 10),
                                                                                       Align(
                                                                                         alignment: Alignment.center,
-                                                                                        child: Container(
-                                                                                          height: 150,
-                                                                                          width: 150,
-                                                                                          decoration: BoxDecoration(
-                                                                                            borderRadius: BorderRadius.circular(75),
-                                                                                          ),
-                                                                                          child: ClipRRect(
-                                                                                            borderRadius: BorderRadius.circular(75),
-                                                                                            child: CachedNetworkImage(
-                                                                                              imageUrl: snapshot.data.docs[index]['img_link'],
-                                                                                              fit: BoxFit.cover,
-                                                                                              progressIndicatorBuilder: (context, url, downloadProgress) => Center(
-                                                                                                child: SizedBox(
-                                                                                                  height: 35,
-                                                                                                  width: 35,
-                                                                                                  child: CircularProgressIndicator(backgroundColor: Colors.white, valueColor: AlwaysStoppedAnimation<Color>(primaryGreen), strokeWidth: 3, value: downloadProgress.progress),
+                                                                                        child: Hero(
+                                                                                          tag: snapshot.data.docs[index].id,
+                                                                                          child: Container(
+                                                                                            height: 150,
+                                                                                            width: 150,
+                                                                                            decoration: BoxDecoration(
+                                                                                              borderRadius: BorderRadius.circular(75),
+                                                                                            ),
+                                                                                            child: ClipRRect(
+                                                                                              borderRadius: BorderRadius.circular(75),
+                                                                                              child: CachedNetworkImage(
+                                                                                                imageUrl: snapshot.data.docs[index]['img_link'],
+                                                                                                fit: BoxFit.cover,
+                                                                                                progressIndicatorBuilder: (context, url, downloadProgress) => Center(
+                                                                                                  child: SizedBox(
+                                                                                                    height: 35,
+                                                                                                    width: 35,
+                                                                                                    child: CircularProgressIndicator(backgroundColor: Colors.white, valueColor: AlwaysStoppedAnimation<Color>(primaryGreen), strokeWidth: 3, value: downloadProgress.progress),
+                                                                                                  ),
                                                                                                 ),
+                                                                                                errorWidget: (context, url, error) => Icon(Icons.error),
                                                                                               ),
-                                                                                              errorWidget: (context, url, error) => Icon(Icons.error),
                                                                                             ),
                                                                                           ),
                                                                                         ),
@@ -373,20 +404,29 @@ class _HomePageState extends State<HomePage> {
                                                                           children: [
                                                                             Padding(
                                                                                 padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
-                                                                                child: ClipOval(
-                                                                                  child: Material(
-                                                                                    color: primaryGreen.withOpacity(0.3),
-                                                                                    child: InkWell(
-                                                                                      splashColor: blue,
-                                                                                      child: SizedBox(
-                                                                                          width: 56,
-                                                                                          height: 56,
-                                                                                          child: Icon(
-                                                                                            Icons.arrow_forward_ios_outlined,
-                                                                                            color: darkGreen,
-                                                                                            size: 20,
-                                                                                          )),
-                                                                                      onTap: () {},
+                                                                                child: Hero(
+                                                                                  tag: 'all',
+                                                                                  child: ClipOval(
+                                                                                    child: Material(
+                                                                                      color: primaryGreen.withOpacity(0.3),
+                                                                                      child: InkWell(
+                                                                                        splashColor: blue,
+                                                                                        child: SizedBox(
+                                                                                            width: 56,
+                                                                                            height: 56,
+                                                                                            child: Icon(
+                                                                                              Icons.arrow_forward_ios_outlined,
+                                                                                              color: darkGreen,
+                                                                                              size: 20,
+                                                                                            )),
+                                                                                        onTap: () {
+                                                                                          Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
+                                                                                              builder: (context) => AllProducts(
+                                                                                                    category: categories[_tabController.index],
+                                                                                                    user: widget.user,
+                                                                                                  )));
+                                                                                        },
+                                                                                      ),
                                                                                     ),
                                                                                   ),
                                                                                 )),

@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:food_ordering_app/screens/authScreen.dart';
 import 'package:food_ordering_app/screens/bottomNavigator.dart';
+import 'package:food_ordering_app/user/localUser.dart';
 import 'package:food_ordering_app/utils/colors.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -25,10 +26,23 @@ class _SplashScreenState extends State<SplashScreen> {
             .collection('user')
             .doc(user.email)
             .get();
+        setState(() {
+          LocalUser.userData.firstName = snap['firstName'].toString();
+          LocalUser.userData.lastName = snap['lastName'].toString();
+          LocalUser.userData.email = snap['email'].toString();
+          LocalUser.userData.gender = snap['gender'].toString();
+          LocalUser.userData.phone = snap['phone'].toString();
+          LocalUser.userData.walletAmount = snap['walletAmount'];
+          LocalUser.userData.orders = snap['orders'];
+          snap.data().containsKey('image')
+              ? LocalUser.userData.image = snap['image']
+              : LocalUser.userData.image = null;
+        });
         Navigator.of(context).pushReplacement(MaterialPageRoute(
             builder: (context) => BottomNavigator(
                   fName: snap['firstName'],
                   gender: snap['gender'],
+                  userDetails: snap,
                 )));
       }
     });

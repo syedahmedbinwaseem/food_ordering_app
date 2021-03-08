@@ -64,6 +64,10 @@ class _LoginState extends State<Login> {
                 LocalUser.userData.gender = snap['gender'].toString();
                 LocalUser.userData.phone = snap['phone'].toString();
                 LocalUser.userData.walletAmount = snap['walletAmount'];
+                LocalUser.userData.orders = snap['orders'];
+                snap.data().containsKey('image')
+                    ? LocalUser.userData.image = snap['image']
+                    : LocalUser.userData.image = null;
               } catch (e) {
                 print(e);
               }

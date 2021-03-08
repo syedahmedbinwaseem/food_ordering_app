@@ -58,7 +58,9 @@ class _SignupState extends State<Signup> {
           'email': email.text,
           'phone': phone.text,
           'walletAmount': 0,
-          'gender': json.decode(response.body)['gender']
+          'gender': json.decode(response.body)['gender'],
+          'orders': 0,
+          'image': null
         });
         setState(() {
           isLoading = false;
@@ -155,6 +157,7 @@ class _SignupState extends State<Signup> {
               child: Padding(
                 padding: const EdgeInsets.only(left: 15, right: 15),
                 child: SingleChildScrollView(
+                  padding: EdgeInsets.only(bottom: 20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

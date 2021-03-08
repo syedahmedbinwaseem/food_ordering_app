@@ -106,47 +106,51 @@ class _ProductScreenState extends State<ProductScreen> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Center(
-                                  child: Container(
-                                    height: MediaQuery.of(context).size.width *
-                                        0.361,
-                                    width: MediaQuery.of(context).size.width *
-                                        0.361,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(
+                                  child: Hero(
+                                    tag: widget.product.id,
+                                    child: Container(
+                                      height:
                                           MediaQuery.of(context).size.width *
-                                              0.180),
-                                    ),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(
-                                          MediaQuery.of(context).size.width *
-                                              0.180),
-                                      child: CachedNetworkImage(
-                                        imageUrl: widget.product['img_link'],
-                                        fit: BoxFit.cover,
-                                        progressIndicatorBuilder:
-                                            (context, url, downloadProgress) =>
-                                                Center(
-                                          child: SizedBox(
-                                            height: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.0972,
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.0972,
-                                            child: CircularProgressIndicator(
-                                                backgroundColor: Colors.white,
-                                                valueColor:
-                                                    AlwaysStoppedAnimation<
-                                                        Color>(primaryGreen),
-                                                strokeWidth: 3,
-                                                value:
-                                                    downloadProgress.progress),
+                                              0.361,
+                                      width: MediaQuery.of(context).size.width *
+                                          0.361,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(
+                                            MediaQuery.of(context).size.width *
+                                                0.180),
+                                      ),
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(
+                                            MediaQuery.of(context).size.width *
+                                                0.180),
+                                        child: CachedNetworkImage(
+                                          imageUrl: widget.product['img_link'],
+                                          fit: BoxFit.cover,
+                                          progressIndicatorBuilder: (context,
+                                                  url, downloadProgress) =>
+                                              Center(
+                                            child: SizedBox(
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.0972,
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.0972,
+                                              child: CircularProgressIndicator(
+                                                  backgroundColor: Colors.white,
+                                                  valueColor:
+                                                      AlwaysStoppedAnimation<
+                                                          Color>(primaryGreen),
+                                                  strokeWidth: 3,
+                                                  value: downloadProgress
+                                                      .progress),
+                                            ),
                                           ),
+                                          errorWidget: (context, url, error) =>
+                                              Icon(Icons.error),
                                         ),
-                                        errorWidget: (context, url, error) =>
-                                            Icon(Icons.error),
                                       ),
                                     ),
                                   ),
@@ -374,6 +378,12 @@ class _ProductScreenState extends State<ProductScreen> {
                                                         : Color(0xffe6fbf4),
                                                   ),
                                                   child: FlatButton(
+                                                    splashColor: primaryGreen
+                                                        .withOpacity(0.3),
+                                                    focusColor: primaryGreen
+                                                        .withOpacity(0.3),
+                                                    highlightColor: primaryGreen
+                                                        .withOpacity(0.3),
                                                     onPressed: () {
                                                       setState(() {
                                                         stap = !stap;
@@ -413,6 +423,12 @@ class _ProductScreenState extends State<ProductScreen> {
                                                         : Color(0xffe6fbf4),
                                                   ),
                                                   child: FlatButton(
+                                                    splashColor: primaryGreen
+                                                        .withOpacity(0.3),
+                                                    focusColor: primaryGreen
+                                                        .withOpacity(0.3),
+                                                    highlightColor: primaryGreen
+                                                        .withOpacity(0.3),
                                                     onPressed: () {
                                                       setState(() {
                                                         mtap = !mtap;
@@ -452,6 +468,12 @@ class _ProductScreenState extends State<ProductScreen> {
                                                         : Color(0xffe6fbf4),
                                                   ),
                                                   child: FlatButton(
+                                                    splashColor: primaryGreen
+                                                        .withOpacity(0.3),
+                                                    focusColor: primaryGreen
+                                                        .withOpacity(0.3),
+                                                    highlightColor: primaryGreen
+                                                        .withOpacity(0.3),
                                                     onPressed: () {
                                                       setState(() {
                                                         ltap = !ltap;
@@ -756,6 +778,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                             child: Center(
                                               child: AnimatedFlipCounter(
                                                 value: quantity,
+                                                weight: FontWeight.normal,
                                                 duration:
                                                     Duration(milliseconds: 200),
                                                 color: Colors.white,
@@ -815,6 +838,9 @@ class _ProductScreenState extends State<ProductScreen> {
                         ),
                         Container(
                           child: FlatButton(
+                            splashColor: primaryGreen.withOpacity(0.3),
+                            focusColor: primaryGreen.withOpacity(0.3),
+                            highlightColor: primaryGreen.withOpacity(0.3),
                             onPressed: () {},
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.only(

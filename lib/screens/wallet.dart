@@ -51,8 +51,9 @@ class _WalletState extends State<Wallet> {
           return Container(
             child: Center(
                 child: AnimatedFlipCounter(
+              weight: FontWeight.bold,
               duration: Duration(milliseconds: 500),
-              value: snapshot.data['walletAmount'],
+              value: 555,
 
               /* pass in a number like 2014 */
               color: blue,
