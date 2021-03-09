@@ -7,10 +7,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:food_ordering_app/screens/signUp.dart';
 import 'package:food_ordering_app/user/localUser.dart';
-<<<<<<< HEAD
-=======
 import 'package:food_ordering_app/utils/toast.dart';
->>>>>>> 15c5c823c1e8c852c2b9afef756f5a1087f6ce24
 
 // ignore: must_be_immutable
 class Login extends StatefulWidget {

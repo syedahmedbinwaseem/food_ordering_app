@@ -1,17 +1,3 @@
-<<<<<<< HEAD
-import 'package:flutter/material.dart';
-import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
-
-class Product extends StatefulWidget {
-  @override
-  _ProductState createState() => _ProductState();
-}
-
-class _ProductState extends State<Product> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold();
-=======
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -895,6 +881,5 @@ class MyBehavior extends ScrollBehavior {
   Widget buildViewportChrome(
       BuildContext context, Widget child, AxisDirection axisDirection) {
     return child;
->>>>>>> 15c5c823c1e8c852c2b9afef756f5a1087f6ce24
   }
 }
