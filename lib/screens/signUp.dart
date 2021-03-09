@@ -62,6 +62,7 @@ class _SignupState extends State<Signup> {
           'orders': 0,
           'image': null
         });
+
         setState(() {
           isLoading = false;
         });

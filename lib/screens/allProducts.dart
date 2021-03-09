@@ -142,7 +142,7 @@ class _AllProductsState extends State<AllProducts> {
                                     snapshot.data.docs[index]['name'],
                                     style: TextStyle(
                                         fontFamily: 'Sofia',
-                                        fontSize: width * 0.063888,
+                                        fontSize: 23,
                                         color: darkGreen),
                                   ),
                                   SizedBox(height: width * 0.027777),
@@ -151,10 +151,10 @@ class _AllProductsState extends State<AllProducts> {
                                                 .runtimeType ==
                                             int
                                         ? 'Rs. ${snapshot.data.docs[index]['price']}'
-                                        : 'Starting from Rs. ${snapshot.data.docs[index]['price'][0]}',
+                                        : 'From Rs. ${snapshot.data.docs[index]['price'][0]}',
                                     style: TextStyle(
                                         fontFamily: 'Sofia',
-                                        fontSize: width * 0.05555,
+                                        fontSize: 20,
                                         color: Colors.black),
                                   )
                                 ],

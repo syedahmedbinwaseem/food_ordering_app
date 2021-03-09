@@ -462,7 +462,10 @@ class _ProfileState extends State<Profile> {
               Icons.arrow_back,
               color: blue,
             ),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context, rootNavigator: true).pushReplacement(
+                  MaterialPageRoute(builder: (context) => BottomNavigator()));
+            },
           ),
           actions: [
             IconButton(
@@ -582,12 +585,11 @@ class _ProfileState extends State<Profile> {
                                         color: blue,
                                         size: 20,
                                       ),
-                                      SizedBox(width: width * 0.0555),
+                                      SizedBox(width: width * 0.04166),
                                       Text(
                                         snapshot.data['phone'],
                                         style: TextStyle(
-                                            fontFamily: 'Sofia',
-                                            fontSize: width * 0.04166),
+                                            fontFamily: 'Sofia', fontSize: 15),
                                       ),
                                     ],
                                   ),
@@ -604,8 +606,7 @@ class _ProfileState extends State<Profile> {
                                       Text(
                                         snapshot.data['email'],
                                         style: TextStyle(
-                                            fontFamily: 'Sofia',
-                                            fontSize: width * 0.04166),
+                                            fontFamily: 'Sofia', fontSize: 15),
                                       ),
                                     ],
                                   ),
@@ -640,28 +641,12 @@ class _ProfileState extends State<Profile> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
                                           children: [
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Text(
-                                                  'Rs. ',
-                                                  style: TextStyle(
-                                                      fontFamily: 'Sofia',
-                                                      fontSize: width * 0.05,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                                AnimatedFlipCounter(
-                                                  weight: FontWeight.bold,
-                                                  duration: Duration(
-                                                      milliseconds: 500),
-                                                  value: snapshot
-                                                      .data['walletAmount'],
-                                                  color: Colors.black,
-                                                  size: width * 0.05,
-                                                ),
-                                              ],
+                                            Text(
+                                              'Rs. ${snapshot.data['walletAmount']}',
+                                              style: TextStyle(
+                                                  fontFamily: 'Sofia',
+                                                  fontSize: width * 0.04,
+                                                  fontWeight: FontWeight.bold),
                                             ),
                                             SizedBox(height: width * 0.01388),
                                             Text(
@@ -700,13 +685,12 @@ class _ProfileState extends State<Profile> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
                                           children: [
-                                            AnimatedFlipCounter(
-                                              weight: FontWeight.bold,
-                                              duration:
-                                                  Duration(milliseconds: 500),
-                                              value: snapshot.data['orders'],
-                                              color: Colors.black,
-                                              size: width * 0.05,
+                                            Text(
+                                              '${snapshot.data['orders']}',
+                                              style: TextStyle(
+                                                  fontFamily: 'Sofia',
+                                                  fontSize: width * 0.04,
+                                                  fontWeight: FontWeight.bold),
                                             ),
                                             SizedBox(height: width * 0.01388),
                                             Text(
@@ -788,19 +772,19 @@ class _ProfileState extends State<Profile> {
                           ),
                           FlatButton(
                             onPressed: () {
-                              pushNewScreenWithRouteSettings(context,
-                                  settings: RouteSettings(name: '/home'),
-                                  screen: BottomNavigator(
-                                    initIndex: 2,
-                                  ),
-                                  pageTransitionAnimation:
-                                      PageTransitionAnimation.scaleRotate,
-                                  withNavBar: false);
-                              // Navigator.of(context, rootNavigator: true)
-                              //     .pushReplacement(MaterialPageRoute(
-                              //         builder: (context) => BottomNavigator(
-                              //               initIndex: 2,
-                              //             )));
+                              // pushNewScreenWithRouteSettings(context,
+                              //     settings: RouteSettings(name: '/home'),
+                              //     screen: BottomNavigator(
+                              //       initIndex: 2,
+                              //     ),
+                              //     pageTransitionAnimation:
+                              //         PageTransitionAnimation.slideRight,
+                              //     withNavBar: false);
+                              Navigator.of(context, rootNavigator: true)
+                                  .pushReplacement(MaterialPageRoute(
+                                      builder: (context) => BottomNavigator(
+                                            initIndex: 2,
+                                          )));
                             },
                             splashColor: primaryGreen.withOpacity(0.3),
                             focusColor: primaryGreen.withOpacity(0.3),
@@ -834,9 +818,9 @@ class _ProfileState extends State<Profile> {
                                 try {
                                   await FirebaseAuth.instance.signOut();
                                 } catch (e) {}
-                                Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
+
+                                Navigator.of(context, rootNavigator: true)
+                                    .pushReplacement(MaterialPageRoute(
                                         builder: (context) => AuthScreen(
                                               index: 0,
                                             )));

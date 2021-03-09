@@ -115,6 +115,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                       width: MediaQuery.of(context).size.width *
                                           0.361,
                                       decoration: BoxDecoration(
+                                        color: primaryGreen.withOpacity(0.3),
                                         borderRadius: BorderRadius.circular(
                                             MediaQuery.of(context).size.width *
                                                 0.180),

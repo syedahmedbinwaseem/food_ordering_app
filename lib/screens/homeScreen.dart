@@ -340,31 +340,27 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                                                                         snapshot.data.docs[index]['name'],
                                                                                         style: TextStyle(fontFamily: 'Sofia', fontSize: 25, color: darkGreen),
                                                                                       ),
-                                                                                      SizedBox(height: 10),
-                                                                                      Flexible(
-                                                                                        child: Container(
-                                                                                          height: 50,
-                                                                                          child: Text(
-                                                                                            snapshot.data.docs[index]['description'],
-                                                                                            overflow: TextOverflow.ellipsis,
-                                                                                            maxLines: 3,
-                                                                                            style: TextStyle(
-                                                                                              fontFamily: 'Sofia',
-                                                                                              fontSize: snapshot.data.docs[index]['price'].runtimeType == int ? 14 : 13,
-                                                                                            ),
+                                                                                      SizedBox(height: 5),
+                                                                                      Container(
+                                                                                        // color: Colors.pink,
+                                                                                        height: 50,
+                                                                                        child: Text(
+                                                                                          snapshot.data.docs[index]['description'],
+                                                                                          overflow: TextOverflow.ellipsis,
+                                                                                          maxLines: 3,
+                                                                                          style: TextStyle(
+                                                                                            fontFamily: 'Sofia',
+                                                                                            fontSize: snapshot.data.docs[index]['price'].runtimeType == int ? 14 : 13,
                                                                                           ),
                                                                                         ),
                                                                                       ),
-                                                                                      snapshot.data.docs[index]['price'].runtimeType == int ? Container() : SizedBox(height: 10),
-                                                                                      Expanded(
+                                                                                      snapshot.data.docs[index]['price'].runtimeType == int ? Container() : SizedBox(height: 0),
+                                                                                      Flexible(
                                                                                         child: Align(
                                                                                           alignment: Alignment.bottomLeft,
                                                                                           child: Text(
-                                                                                            snapshot.data.docs[index]['price'].runtimeType == int ? 'Rs. ${snapshot.data.docs[index]['price']}' : 'Starting from Rs. ${snapshot.data.docs[index]['price'][0]}',
-                                                                                            style: TextStyle(
-                                                                                              fontFamily: 'Sofia',
-                                                                                              fontSize: snapshot.data.docs[index]['price'].runtimeType == int ? 25 : 22,
-                                                                                            ),
+                                                                                            snapshot.data.docs[index]['price'].runtimeType == int ? 'Rs. ${snapshot.data.docs[index]['price']}' : 'From Rs. ${snapshot.data.docs[index]['price'][0]}',
+                                                                                            style: TextStyle(fontFamily: 'Sofia', fontSize: snapshot.data.docs[index]['price'].runtimeType == int ? 23 : 20),
                                                                                           ),
                                                                                         ),
                                                                                       )
