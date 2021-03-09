@@ -3,7 +3,6 @@ import 'package:food_ordering_app/screens/login.dart';
 import 'package:food_ordering_app/screens/signUp.dart';
 import 'package:food_ordering_app/utils/colors.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
-import 'package:tabbar/tabbar.dart';
 
 // ignore: must_be_immutable
 class AuthScreen extends StatefulWidget {
@@ -17,9 +16,6 @@ class _AuthScreenState extends State<AuthScreen> {
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
-    var height =
-        MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top;
-    final controller = PageController();
 
     return SafeArea(
         child: Scaffold(
@@ -80,7 +76,12 @@ class _AuthScreenState extends State<AuthScreen> {
                     Expanded(
                         child: Container(
                       child: TabBarView(
-                        children: [Login(), Signup()],
+                        children: [
+                          Login(
+                            padding: MediaQuery.of(context).padding.top,
+                          ),
+                          Signup()
+                        ],
                       ),
                     ))
                   ],
@@ -91,66 +92,5 @@ class _AuthScreenState extends State<AuthScreen> {
         ],
       ),
     ));
-    // return GestureDetector(
-    //   onTap: () {
-    //     FocusScope.of(context).unfocus();
-    //   },
-    //   child: DefaultTabController(
-    //     length: 2,
-    //     child: SafeArea(
-    //       child: Scaffold(
-    //         resizeToAvoidBottomPadding: false,
-    //         backgroundColor: primaryGreen,
-    //         body: Column(
-    //           children: [
-    //             Container(
-    //               height: MediaQuery.of(context).size.height * 0.15,
-    //               width: MediaQuery.of(context).size.width,
-    //               decoration: BoxDecoration(
-    //                 color: primaryGreen,
-    //               ),
-    //             ),
-    //             Container(
-    //               height: MediaQuery.of(context).size.height * 0.09,
-    //               width: MediaQuery.of(context).size.width,
-    //               decoration: BoxDecoration(
-    //                 color: Colors.white,
-    //                 borderRadius: BorderRadius.only(
-    //                   topLeft: Radius.circular(25),
-    //                   topRight: Radius.circular(25),
-    //                 ),
-    //               ),
-    //               child: TabBar(
-    //                 labelColor: Colors.black,
-    //                 indicatorSize: TabBarIndicatorSize.tab,
-    //                 indicatorColor: darkGreen,
-    //                 indicatorWeight: height * 0.005,
-    //                 labelStyle:
-    //                     TextStyle(fontFamily: 'Sofia', fontSize: width * 0.05),
-    //                 tabs: [
-    //                   Tab(
-    //                     text: 'Login',
-    //                   ),
-    //                   Tab(
-    //                     text: 'SignUp',
-    //                   ),
-    //                 ],
-    //               ),
-    //             ),
-    //             Container(
-    //               height: height * 0.75,
-    //               child: TabBarView(
-    //                 children: [
-    //                   Login(),
-    //                   Signup(),
-    //                 ],
-    //               ),
-    //             )
-    //           ],
-    //         ),
-    //       ),
-    //     ),
-    //   ),
-    // );
   }
 }

@@ -1,20 +1,21 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:food_ordering_app/utils/colors.dart';
 
 class AnimatedFlipCounter extends StatelessWidget {
   final int value;
   final Duration duration;
   final double size;
   final Color color;
+  final FontWeight weight;
 
-  const AnimatedFlipCounter({
-    Key key,
-    @required this.value,
-    @required this.duration,
-    this.size = 72,
-    this.color = Colors.black,
-  }) : super(key: key);
+  const AnimatedFlipCounter(
+      {Key key,
+      @required this.value,
+      @required this.duration,
+      this.size = 72,
+      @required this.color,
+      @required this.weight})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +40,7 @@ class AnimatedFlipCounter extends StatelessWidget {
           height: size,
           width: size / 1.8,
           color: color,
+          weight: weight,
         );
       }),
     );
@@ -51,15 +53,17 @@ class _SingleDigitFlipCounter extends StatelessWidget {
   final double height;
   final double width;
   final Color color;
+  final FontWeight weight;
 
-  const _SingleDigitFlipCounter({
-    Key key,
-    @required this.value,
-    @required this.duration,
-    @required this.height,
-    @required this.width,
-    @required this.color,
-  }) : super(key: key);
+  const _SingleDigitFlipCounter(
+      {Key key,
+      @required this.value,
+      @required this.duration,
+      @required this.height,
+      @required this.width,
+      @required this.color,
+      @required this.weight})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -76,15 +80,15 @@ class _SingleDigitFlipCounter extends StatelessWidget {
             fit: StackFit.expand,
             children: <Widget>[
               _buildSingleDigit(
-                digit: whole % 10,
-                offset: height * decimal,
-                opacity: 1 - decimal,
-              ),
+                  digit: whole % 10,
+                  offset: height * decimal,
+                  opacity: 1 - decimal,
+                  weight1: weight),
               _buildSingleDigit(
-                digit: (whole + 1) % 10,
-                offset: height * decimal - height,
-                opacity: decimal,
-              ),
+                  digit: (whole + 1) % 10,
+                  offset: height * decimal - height,
+                  opacity: decimal,
+                  weight1: weight),
             ],
           ),
         );
@@ -92,7 +96,8 @@ class _SingleDigitFlipCounter extends StatelessWidget {
     );
   }
 
-  Widget _buildSingleDigit({int digit, double offset, double opacity}) {
+  Widget _buildSingleDigit(
+      {int digit, double offset, double opacity, FontWeight weight1}) {
     return Positioned(
       child: SizedBox(
         width: width,
@@ -100,8 +105,11 @@ class _SingleDigitFlipCounter extends StatelessWidget {
           opacity: opacity,
           child: Text(
             "$digit",
-            style:
-                TextStyle(fontSize: height, color: blue, fontFamily: 'Sofia'),
+            style: TextStyle(
+                fontSize: height,
+                color: color,
+                fontFamily: 'Sofia',
+                fontWeight: weight1),
             textAlign: TextAlign.center,
           ),
         ),

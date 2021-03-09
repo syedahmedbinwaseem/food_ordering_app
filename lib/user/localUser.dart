@@ -10,4 +10,6 @@ class LocalUser {
   String gender;
   String phone;
   int walletAmount;
+  int orders;
+  String image;
 }

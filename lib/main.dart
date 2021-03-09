@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+<<<<<<< HEAD
 
 import 'package:firebase_core/firebase_core.dart';
 
+=======
+import 'package:firebase_core/firebase_core.dart';
+>>>>>>> 15c5c823c1e8c852c2b9afef756f5a1087f6ce24
 import 'package:food_ordering_app/screens/splash.dart';
 import 'package:food_ordering_app/utils/colors.dart';
 

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:food_ordering_app/screens/cart.dart';
@@ -7,13 +8,133 @@ import 'package:food_ordering_app/screens/wallet.dart';
 import 'package:food_ordering_app/utils/colors.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
-class BottomNavigator extends StatelessWidget {
-  BottomNavigator({Key key}) : super(key: key);
+// // ignore: must_be_immutable
+// class BottomNavigator extends StatelessWidget {
+//   String fName;
+//   String gender;
+//   DocumentSnapshot userDetails;
+//   int initIndex;
+
+//   BottomNavigator({
+//     Key key,
+//     this.fName,
+//     this.gender,
+//     this.userDetails,
+//   }) : super(key: key);
+//   final PersistentTabController _controller =
+//       PersistentTabController(initialIndex: 0);
+//   List<Widget> _buildScreens() {
+//     return [
+//       HomePage(
+//         name: fName,
+//         gender: gender,
+//         user: userDetails,
+//       ),
+//       Cart(),
+//       Wallet(),
+//       Profile(user: userDetails)
+//     ];
+//   }
+
+//   List<PersistentBottomNavBarItem> _navBarsItems() {
+//     return [
+//       PersistentBottomNavBarItem(
+//         icon: Icon(Icons.home),
+//         title: ("Home"),
+//         textStyle: TextStyle(color: Colors.black, fontFamily: 'Sofia'),
+//         activeColor: primaryGreen,
+//         inactiveColor: lightBlue,
+//       ),
+//       PersistentBottomNavBarItem(
+//         icon: Icon(Icons.shopping_cart),
+//         title: ("Cart"),
+//         activeColor: primaryGreen,
+//         textStyle: TextStyle(color: Colors.black, fontFamily: 'Sofia'),
+//         inactiveColor: lightBlue,
+//       ),
+//       PersistentBottomNavBarItem(
+//         icon: Icon(Icons.account_balance_wallet),
+//         title: ("Wallet"),
+//         activeColor: primaryGreen,
+//         textStyle: TextStyle(color: Colors.black, fontFamily: 'Sofia'),
+//         inactiveColor: lightBlue,
+//       ),
+//       PersistentBottomNavBarItem(
+//         icon: Icon(Icons.person),
+//         title: ("Profile"),
+//         activeColor: primaryGreen,
+//         textStyle: TextStyle(color: Colors.black, fontFamily: 'Sofia'),
+//         inactiveColor: lightBlue,
+//       ),
+//     ];
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return PersistentTabView(
+//       context,
+//       controller: _controller,
+//       screens: _buildScreens(),
+//       items: _navBarsItems(),
+//       confineInSafeArea: true,
+//       backgroundColor: Colors.white,
+//       handleAndroidBackButtonPress: true,
+//       resizeToAvoidBottomInset:
+//           true, // This needs to be true if you want to move up the screen when keyboard appears.
+//       stateManagement: true,
+//       hideNavigationBarWhenKeyboardShows:
+//           true, // Recommended to set 'resizeToAvoidBottomInset' as true while using this argument.
+//       decoration: NavBarDecoration(
+//         borderRadius: BorderRadius.circular(10.0),
+//         colorBehindNavBar: Colors.white,
+//       ),
+//       popAllScreensOnTapOfSelectedTab: true,
+//       popActionScreens: PopActionScreensType.all,
+//       itemAnimationProperties: ItemAnimationProperties(
+//         // Navigation Bar's items animation properties.
+//         duration: Duration(milliseconds: 200),
+//         curve: Curves.ease,
+//       ),
+//       screenTransitionAnimation: ScreenTransitionAnimation(
+//         // Screen transition animation on change of selected tab.
+//         animateTabTransition: true,
+//         curve: Curves.ease,
+//         duration: Duration(milliseconds: 200),
+//       ),
+//       navBarStyle:
+//           NavBarStyle.style9, // Choose the nav bar style with this property.
+//     );
+//   }
+// }
+
+class BottomNavigator extends StatefulWidget {
+  String fName;
+  String gender;
+  DocumentSnapshot userDetails;
+  int initIndex;
+
+  BottomNavigator(
+      {Key key, this.fName, this.gender, this.userDetails, this.initIndex})
+      : super(key: key);
+  @override
+  _BottomNavigatorState createState() => _BottomNavigatorState();
+}
+
+class _BottomNavigatorState extends State<BottomNavigator> {
   final PersistentTabController _controller =
       PersistentTabController(initialIndex: 0);
-
+  int index;
   List<Widget> _buildScreens() {
-    return [HomePage(), Cart(), Wallet(), Profile()];
+    return [
+      HomePage(
+        name: widget.fName,
+        gender: widget.gender,
+        user: widget.userDetails,
+      ),
+      Cart(),
+      Wallet(),
+      Profile(user: widget.userDetails)
+    ];
   }
 
   List<PersistentBottomNavBarItem> _navBarsItems() {
@@ -50,7 +171,23 @@ class BottomNavigator extends StatelessWidget {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    setState(() {
+      index = widget.initIndex;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    if (index == null) {
+    } else {
+      _controller.jumpToTab(index);
+      setState(() {
+        index = null;
+      });
+    }
     return PersistentTabView(
       context,
       controller: _controller,

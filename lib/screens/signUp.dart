@@ -1,11 +1,13 @@
-import 'package:flutter/material.dart';
-import 'package:food_ordering_app/screens/authScreen.dart';
+import 'dart:convert';
 
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:food_ordering_app/screens/authScreen.dart';
 import 'package:food_ordering_app/utils/colors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:http/http.dart' as http;
 
 final FirebaseAuth mauth = FirebaseAuth.instance;
 
@@ -20,9 +22,17 @@ class _SignupState extends State<Signup> {
   TextEditingController lname = TextEditingController();
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
+  TextEditingController phone = TextEditingController();
+  final _mobileFormatter = PhoneNumberTextInputFormatter();
   bool isLoading = false;
   bool signUp;
-  FToast fToast;
+  bool showPass = true;
+
+  void toggle() {
+    setState(() {
+      showPass = !showPass;
+    });
+  }
 
   void signup() async {
     setState(() {
@@ -38,15 +48,19 @@ class _SignupState extends State<Signup> {
         signUp = true;
       });
       print(user.additionalUserInfo.username);
+      var response =
+          await http.get('https://api.genderize.io?name=${fname.text}');
       if (user != null) {
         FirebaseFirestore.instance.collection("user").doc("${email.text}").set({
           'created_at': Timestamp.now(),
           'firstName': fname.text,
           'lastName': lname.text,
           'email': email.text,
-          'gender': '',
-          'phone': '',
-          'walletAmount': 0
+          'phone': phone.text,
+          'walletAmount': 0,
+          'gender': json.decode(response.body)['gender'],
+          'orders': 0,
+          'image': null
         });
         setState(() {
           isLoading = false;
@@ -97,6 +111,7 @@ class _SignupState extends State<Signup> {
       lname.clear();
       email.clear();
       password.clear();
+      phone.clear();
       FocusScope.of(context).unfocus();
     } on FirebaseAuthException catch (e) {
       if (e.code == 'email-already-in-use') {
@@ -111,6 +126,11 @@ class _SignupState extends State<Signup> {
     setState(() {
       isLoading = false;
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
   }
 
   @override
@@ -137,6 +157,7 @@ class _SignupState extends State<Signup> {
               child: Padding(
                 padding: const EdgeInsets.only(left: 15, right: 15),
                 child: SingleChildScrollView(
+                  padding: EdgeInsets.only(bottom: 20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -196,6 +217,35 @@ class _SignupState extends State<Signup> {
                         ),
                       ),
                       TextFormField(
+                        textInputAction: TextInputAction.next,
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.digitsOnly,
+                          _mobileFormatter,
+                          LengthLimitingTextInputFormatter(12),
+                        ],
+                        keyboardType: TextInputType.numberWithOptions(),
+                        style: TextStyle(fontFamily: 'Sofia'),
+                        validator: (value) {
+                          return value.isEmpty
+                              ? 'Number is required'
+                              : value.length < 12
+                                  ? 'Invalid number'
+                                  : null;
+                        },
+                        controller: phone,
+                        decoration: InputDecoration(
+                          errorStyle: TextStyle(
+                              fontFamily: 'Sofia',
+                              color: Colors.red,
+                              fontSize: 14),
+                          labelText: 'Phone',
+                          labelStyle: TextStyle(
+                              fontFamily: 'Sofia',
+                              color: Colors.black,
+                              fontSize: 14),
+                        ),
+                      ),
+                      TextFormField(
                         keyboardType: TextInputType.emailAddress,
                         textInputAction: TextInputAction.next,
                         style: TextStyle(fontFamily: 'Sofia'),
@@ -219,30 +269,55 @@ class _SignupState extends State<Signup> {
                               fontSize: 14),
                         ),
                       ),
-                      TextFormField(
-                        obscureText: true,
-                        style: TextStyle(fontFamily: 'Sofia'),
-                        validator: (value) {
-                          return value.isEmpty ? 'Password is required' : null;
-                        },
-                        controller: password,
-                        decoration: InputDecoration(
-                          errorStyle: TextStyle(
-                              fontFamily: 'Sofia',
-                              color: Colors.red,
-                              fontSize: 14),
-                          labelText: 'Password',
-                          labelStyle: TextStyle(
-                              fontFamily: 'Sofia',
-                              color: Colors.black,
-                              fontSize: 14),
-                        ),
+                      Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          TextFormField(
+                            obscureText: showPass,
+                            style: TextStyle(fontFamily: 'Sofia'),
+                            validator: (value) {
+                              return value.isEmpty
+                                  ? 'Password is required'
+                                  : value.length < 8
+                                      ? 'Password should be at least 8 characters'
+                                      : null;
+                            },
+                            controller: password,
+                            decoration: InputDecoration(
+                              errorStyle: TextStyle(
+                                  fontFamily: 'Sofia',
+                                  color: Colors.red,
+                                  fontSize: 14),
+                              labelText: 'Password',
+                              labelStyle: TextStyle(
+                                  fontFamily: 'Sofia',
+                                  color: Colors.black,
+                                  fontSize: 14),
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: toggle,
+                            child: Align(
+                              alignment: Alignment.centerRight,
+                              child: showPass
+                                  ? Icon(
+                                      Icons.visibility_off,
+                                      size: 18,
+                                      color: primaryGreen,
+                                    )
+                                  : Icon(
+                                      Icons.visibility,
+                                      size: 18,
+                                      color: primaryGreen,
+                                    ),
+                            ),
+                          )
+                        ],
                       ),
                       SizedBox(height: 20),
                       FlatButton(
                         onPressed: () async {
                           if (fKey.currentState.validate()) {
-                            print(email.text);
                             signup();
                           }
                         },
@@ -301,4 +376,23 @@ int validateEmail(String value) {
     return 1;
   }
   return 0;
+}
+
+class PhoneNumberTextInputFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
+    final int newTextLength = newValue.text.length;
+    int usedSubstringIndex = 0;
+    final StringBuffer newText = new StringBuffer();
+    if (newTextLength >= 5) {
+      newText.write(newValue.text.substring(0, usedSubstringIndex = 4) + '-');
+    }
+    if (newTextLength >= usedSubstringIndex)
+      newText.write(newValue.text.substring(usedSubstringIndex));
+    return new TextEditingValue(
+      text: newText.toString(),
+      selection: new TextSelection.collapsed(offset: newText.length),
+    );
+  }
 }
