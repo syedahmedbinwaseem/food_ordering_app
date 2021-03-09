@@ -8,6 +8,7 @@ import 'package:food_ordering_app/user/localUser.dart';
 import 'package:food_ordering_app/utils/colors.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
+import 'package:food_ordering_app/screens/productScreen.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -260,81 +261,90 @@ class _HomePageState extends State<HomePage> {
                                                                     (context,
                                                                         index) {
                                                                       return Padding(
-                                                                          padding:
-                                                                              const EdgeInsets.all(8.0),
-                                                                          child: Container(
-                                                                              // height: 200,
-                                                                              // width: 220,
-                                                                              decoration: BoxDecoration(
-                                                                                color: primaryGreen.withOpacity(0.3),
-                                                                                borderRadius: BorderRadius.circular(15),
-                                                                              ),
-                                                                              child: Padding(
-                                                                                padding: const EdgeInsets.only(left: 20, right: 20, bottom: 15),
-                                                                                child: Column(
-                                                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                                                  children: [
-                                                                                    SizedBox(height: 10),
-                                                                                    Align(
-                                                                                      alignment: Alignment.center,
-                                                                                      child: Container(
-                                                                                        height: 150,
-                                                                                        width: 150,
-                                                                                        decoration: BoxDecoration(
-                                                                                          borderRadius: BorderRadius.circular(75),
-                                                                                        ),
-                                                                                        child: ClipRRect(
-                                                                                          borderRadius: BorderRadius.circular(75),
-                                                                                          child: CachedNetworkImage(
-                                                                                            imageUrl: snapshot.data.docs[index]['img_link'],
-                                                                                            fit: BoxFit.cover,
-                                                                                            progressIndicatorBuilder: (context, url, downloadProgress) => Center(
-                                                                                              child: SizedBox(
-                                                                                                height: 35,
-                                                                                                width: 35,
-                                                                                                child: CircularProgressIndicator(backgroundColor: Colors.white, valueColor: AlwaysStoppedAnimation<Color>(primaryGreen), strokeWidth: 3, value: downloadProgress.progress),
-                                                                                              ),
-                                                                                            ),
-                                                                                            errorWidget: (context, url, error) => Icon(Icons.error),
-                                                                                          ),
-                                                                                        ),
-                                                                                      ),
-                                                                                    ),
-                                                                                    SizedBox(height: 25),
-                                                                                    Text(
-                                                                                      snapshot.data.docs[index]['name'],
-                                                                                      style: TextStyle(fontFamily: 'Sofia', fontSize: 25, color: darkGreen),
-                                                                                    ),
-                                                                                    SizedBox(height: 10),
-                                                                                    Flexible(
-                                                                                      child: Container(
-                                                                                        height: 50,
-                                                                                        child: Text(
-                                                                                          snapshot.data.docs[index]['description'],
-                                                                                          overflow: TextOverflow.ellipsis,
-                                                                                          maxLines: 3,
-                                                                                          style: TextStyle(
-                                                                                            fontFamily: 'Sofia',
-                                                                                            fontSize: 14,
-                                                                                          ),
-                                                                                        ),
-                                                                                      ),
-                                                                                    ),
-                                                                                    Expanded(
-                                                                                      child: Align(
-                                                                                        alignment: Alignment.bottomLeft,
-                                                                                        child: Text(
-                                                                                          'Rs. ${snapshot.data.docs[index]['price']}',
-                                                                                          style: TextStyle(
-                                                                                            fontFamily: 'Sofia',
-                                                                                            fontSize: 25,
-                                                                                          ),
-                                                                                        ),
-                                                                                      ),
-                                                                                    )
-                                                                                  ],
+                                                                          padding: const EdgeInsets.all(
+                                                                              8.0),
+                                                                          child:
+                                                                              GestureDetector(
+                                                                            onTap:
+                                                                                () {
+                                                                              Navigator.of(context).push(MaterialPageRoute(
+                                                                                builder: (context) => Product(),
+                                                                              ));
+                                                                            },
+                                                                            child: Container(
+                                                                                // height: 200,
+                                                                                // width: 220,
+                                                                                decoration: BoxDecoration(
+                                                                                  color: primaryGreen.withOpacity(0.3),
+                                                                                  borderRadius: BorderRadius.circular(15),
                                                                                 ),
-                                                                              )));
+                                                                                child: Padding(
+                                                                                  padding: const EdgeInsets.only(left: 20, right: 20, bottom: 15),
+                                                                                  child: Column(
+                                                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                    children: [
+                                                                                      SizedBox(height: 10),
+                                                                                      Align(
+                                                                                        alignment: Alignment.center,
+                                                                                        child: Container(
+                                                                                          height: 150,
+                                                                                          width: 150,
+                                                                                          decoration: BoxDecoration(
+                                                                                            borderRadius: BorderRadius.circular(75),
+                                                                                          ),
+                                                                                          child: ClipRRect(
+                                                                                            borderRadius: BorderRadius.circular(75),
+                                                                                            child: CachedNetworkImage(
+                                                                                              imageUrl: snapshot.data.docs[index]['img_link'],
+                                                                                              fit: BoxFit.cover,
+                                                                                              progressIndicatorBuilder: (context, url, downloadProgress) => Center(
+                                                                                                child: SizedBox(
+                                                                                                  height: 35,
+                                                                                                  width: 35,
+                                                                                                  child: CircularProgressIndicator(backgroundColor: Colors.white, valueColor: AlwaysStoppedAnimation<Color>(primaryGreen), strokeWidth: 3, value: downloadProgress.progress),
+                                                                                                ),
+                                                                                              ),
+                                                                                              errorWidget: (context, url, error) => Icon(Icons.error),
+                                                                                            ),
+                                                                                          ),
+                                                                                        ),
+                                                                                      ),
+                                                                                      SizedBox(height: 25),
+                                                                                      Text(
+                                                                                        snapshot.data.docs[index]['name'],
+                                                                                        style: TextStyle(fontFamily: 'Sofia', fontSize: 25, color: darkGreen),
+                                                                                      ),
+                                                                                      SizedBox(height: 10),
+                                                                                      Flexible(
+                                                                                        child: Container(
+                                                                                          height: 50,
+                                                                                          child: Text(
+                                                                                            snapshot.data.docs[index]['description'],
+                                                                                            overflow: TextOverflow.ellipsis,
+                                                                                            maxLines: 3,
+                                                                                            style: TextStyle(
+                                                                                              fontFamily: 'Sofia',
+                                                                                              fontSize: 14,
+                                                                                            ),
+                                                                                          ),
+                                                                                        ),
+                                                                                      ),
+                                                                                      Expanded(
+                                                                                        child: Align(
+                                                                                          alignment: Alignment.bottomLeft,
+                                                                                          child: Text(
+                                                                                            'Rs. ${snapshot.data.docs[index]['price']}',
+                                                                                            style: TextStyle(
+                                                                                              fontFamily: 'Sofia',
+                                                                                              fontSize: 25,
+                                                                                            ),
+                                                                                          ),
+                                                                                        ),
+                                                                                      )
+                                                                                    ],
+                                                                                  ),
+                                                                                )),
+                                                                          ));
                                                                     },
                                                                     childCount: snapshot.data.docs.length ==
                                                                             1

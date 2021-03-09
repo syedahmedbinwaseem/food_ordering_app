@@ -7,8 +7,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:food_ordering_app/screens/signUp.dart';
 import 'package:food_ordering_app/user/localUser.dart';
-import 'package:food_ordering_app/screens/homeScreen.dart';
-import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 class Login extends StatefulWidget {
   @override
