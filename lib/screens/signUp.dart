@@ -108,12 +108,6 @@ class _SignupState extends State<Signup> {
               (route) => false);
         });
       }
-      fname.clear();
-      lname.clear();
-      email.clear();
-      password.clear();
-      phone.clear();
-      FocusScope.of(context).unfocus();
     } on FirebaseAuthException catch (e) {
       if (e.code == 'email-already-in-use') {
         Fluttertoast.showToast(

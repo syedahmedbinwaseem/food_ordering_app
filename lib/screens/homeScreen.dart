@@ -288,15 +288,20 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                                                       SliverChildBuilderDelegate(
                                                                     (context,
                                                                         index) {
-                                                                      return GestureDetector(
-                                                                        onTap:
-                                                                            () {
-                                                                          Navigator.of(context, rootNavigator: true)
-                                                                              .push(MaterialPageRoute(builder: (context) => ProductScreen(product: snapshot.data.docs[index])));
-                                                                        },
-                                                                        child: Padding(
-                                                                            padding: const EdgeInsets.all(8.0),
+                                                                      return Padding(
+                                                                          padding: const EdgeInsets.all(
+                                                                              8.0),
+                                                                          child:
+                                                                              GestureDetector(
+                                                                            onTap:
+                                                                                () {
+                                                                              Navigator.of(context).push(MaterialPageRoute(
+                                                                                builder: (context) => ProductScreen(),
+                                                                              ));
+                                                                            },
                                                                             child: Container(
+                                                                                // height: 200,
+                                                                                // width: 220,
                                                                                 decoration: BoxDecoration(
                                                                                   color: primaryGreen.withOpacity(0.3),
                                                                                   borderRadius: BorderRadius.circular(15),
@@ -309,28 +314,25 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                                                                       SizedBox(height: 10),
                                                                                       Align(
                                                                                         alignment: Alignment.center,
-                                                                                        child: Hero(
-                                                                                          tag: snapshot.data.docs[index].id,
-                                                                                          child: Container(
-                                                                                            height: 150,
-                                                                                            width: 150,
-                                                                                            decoration: BoxDecoration(
-                                                                                              borderRadius: BorderRadius.circular(75),
-                                                                                            ),
-                                                                                            child: ClipRRect(
-                                                                                              borderRadius: BorderRadius.circular(75),
-                                                                                              child: CachedNetworkImage(
-                                                                                                imageUrl: snapshot.data.docs[index]['img_link'],
-                                                                                                fit: BoxFit.cover,
-                                                                                                progressIndicatorBuilder: (context, url, downloadProgress) => Center(
-                                                                                                  child: SizedBox(
-                                                                                                    height: 35,
-                                                                                                    width: 35,
-                                                                                                    child: CircularProgressIndicator(backgroundColor: Colors.white, valueColor: AlwaysStoppedAnimation<Color>(primaryGreen), strokeWidth: 3, value: downloadProgress.progress),
-                                                                                                  ),
+                                                                                        child: Container(
+                                                                                          height: 150,
+                                                                                          width: 150,
+                                                                                          decoration: BoxDecoration(
+                                                                                            borderRadius: BorderRadius.circular(75),
+                                                                                          ),
+                                                                                          child: ClipRRect(
+                                                                                            borderRadius: BorderRadius.circular(75),
+                                                                                            child: CachedNetworkImage(
+                                                                                              imageUrl: snapshot.data.docs[index]['img_link'],
+                                                                                              fit: BoxFit.cover,
+                                                                                              progressIndicatorBuilder: (context, url, downloadProgress) => Center(
+                                                                                                child: SizedBox(
+                                                                                                  height: 35,
+                                                                                                  width: 35,
+                                                                                                  child: CircularProgressIndicator(backgroundColor: Colors.white, valueColor: AlwaysStoppedAnimation<Color>(primaryGreen), strokeWidth: 3, value: downloadProgress.progress),
                                                                                                 ),
-                                                                                                errorWidget: (context, url, error) => Icon(Icons.error),
                                                                                               ),
+                                                                                              errorWidget: (context, url, error) => Icon(Icons.error),
                                                                                             ),
                                                                                           ),
                                                                                         ),
@@ -366,8 +368,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                                                                       )
                                                                                     ],
                                                                                   ),
-                                                                                ))),
-                                                                      );
+                                                                                )),
+                                                                          ));
                                                                     },
                                                                     childCount: snapshot.data.docs.length ==
                                                                             1
