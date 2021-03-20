@@ -274,6 +274,7 @@ class _LoginState extends State<Login> {
                         ),
                       ),
                       SizedBox(height: 20),
+                      // ignore: deprecated_member_use
                       FlatButton(
                         onPressed: () {
                           if (fKey.currentState.validate()) {
@@ -380,6 +381,7 @@ class _LoginState extends State<Login> {
                               ),
                             ),
                             SizedBox(height: 30),
+                            // ignore: deprecated_member_use
                             FlatButton(
                               onPressed: () async {
                                 if (fKey1.currentState.validate()) {

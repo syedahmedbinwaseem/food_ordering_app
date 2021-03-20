@@ -10,25 +10,36 @@ class JazzcashPayment {
   String amount;
   JazzcashPayment({@required this.phone, @required this.amount});
   Future<Response> payment() async {
-    var digest;
     String dateandtime = DateFormat("yyyyMMddHHmmss").format(DateTime.now());
     String dexpiredate = DateFormat("yyyyMMddHHmmss")
         .format(DateTime.now().add(Duration(days: 1)));
     String tre = "T" + dateandtime;
+    // ignore: non_constant_identifier_names
     String pp_Amount = amount;
+    // ignore: non_constant_identifier_names
     String pp_BillReference = "billRef";
+    // ignore: non_constant_identifier_names
     String pp_Description = "Description";
+    // ignore: non_constant_identifier_names
     String pp_Language = "EN";
+    // ignore: non_constant_identifier_names
     String pp_MerchantID = "MC18344";
+    // ignore: non_constant_identifier_names
     String pp_Password = "zfz8e0207x";
-
+    // ignore: non_constant_identifier_names
     String pp_ReturnURL =
         "https://sandbox.jazzcash.com.pk/ApplicationAPI/API/Payment/DoTransaction";
+    // ignore: non_constant_identifier_names
     String pp_ver = "1.1";
+    // ignore: non_constant_identifier_names
     String pp_TxnCurrency = "PKR";
+    // ignore: non_constant_identifier_names
     String pp_TxnDateTime = dateandtime.toString();
+    // ignore: non_constant_identifier_names
     String pp_TxnExpiryDateTime = dexpiredate.toString();
+    // ignore: non_constant_identifier_names
     String pp_TxnRefNo = tre.toString();
+    // ignore: non_constant_identifier_names
     String pp_TxnType = "MWALLET";
     String ppmpf_1 = phone;
     String integeritySalt = "90se1xsg7g";

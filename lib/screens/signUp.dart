@@ -60,7 +60,8 @@ class _SignupState extends State<Signup> {
           'walletAmount': 0,
           'gender': json.decode(response.body)['gender'],
           'orders': 0,
-          'image': null
+          'image': null,
+          'cart': []
         });
 
         setState(() {
@@ -75,6 +76,7 @@ class _SignupState extends State<Signup> {
                   style: TextStyle(color: Colors.black, fontFamily: 'Sofia'),
                 ),
                 actions: <Widget>[
+                  // ignore: deprecated_member_use
                   FlatButton(
                     child: Text(
                       "Continue",
@@ -310,6 +312,7 @@ class _SignupState extends State<Signup> {
                         ],
                       ),
                       SizedBox(height: 20),
+                      // ignore: deprecated_member_use
                       FlatButton(
                         onPressed: () async {
                           if (fKey.currentState.validate()) {

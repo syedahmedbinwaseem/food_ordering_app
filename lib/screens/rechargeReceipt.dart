@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:food_ordering_app/utils/colors.dart';
-import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 
 // ignore: must_be_immutable
@@ -92,6 +91,7 @@ class _ReceiptState extends State<Receipt> {
               alignment: Alignment.centerRight,
               child: Container(
                 width: 60,
+                // ignore: deprecated_member_use
                 child: FlatButton(
                     onPressed: () {
                       Navigator.pop(context);

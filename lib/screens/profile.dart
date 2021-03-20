@@ -11,14 +11,13 @@ import 'package:food_ordering_app/screens/authScreen.dart';
 import 'package:food_ordering_app/screens/bottomNavigator.dart';
 import 'package:food_ordering_app/screens/homeScreen.dart';
 import 'package:food_ordering_app/screens/signUp.dart';
-import 'package:food_ordering_app/screens/wallet.dart';
 import 'package:food_ordering_app/user/localUser.dart';
-import 'package:food_ordering_app/utils/animatedNumber.dart';
 import 'package:food_ordering_app/utils/colors.dart';
 import 'package:food_ordering_app/utils/toast.dart';
+import 'package:hive/hive.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
+// ignore: must_be_immutable
 class Profile extends StatefulWidget {
   DocumentSnapshot user;
 
@@ -28,6 +27,16 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  Box cart;
+
+  Future openBox() async {
+    await Hive.openBox('cart').then((value) {
+      setState(() {
+        cart = value;
+      });
+    });
+  }
+
   GlobalKey<FormState> fKey = GlobalKey<FormState>();
   BottomNavigator bottom = BottomNavigator();
   final picker = ImagePicker();
@@ -95,10 +104,10 @@ class _ProfileState extends State<Profile> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     fToast = FToast();
     fToast.init(context);
+    openBox();
   }
 
   generateBottomSheet(double height, double width) {
@@ -152,7 +161,7 @@ class _ProfileState extends State<Profile> {
                                               color:
                                                   primaryGreen.withOpacity(0.3),
                                             ),
-                                            // padding: EdgeInsets.all(10),
+                                            // ignore: deprecated_member_use
                                             child: FlatButton(
                                               padding:
                                                   LocalUser.userData.image ==
@@ -339,6 +348,7 @@ class _ProfileState extends State<Profile> {
                                     ),
                                   ),
                                   SizedBox(height: 20),
+                                  // ignore: deprecated_member_use
                                   FlatButton(
                                     onPressed: () async {
                                       FocusScope.of(context).unfocus();
@@ -457,6 +467,13 @@ class _ProfileState extends State<Profile> {
         appBar: AppBar(
           backgroundColor: Colors.white,
           elevation: 0,
+          title: Padding(
+            padding: const EdgeInsets.only(top: 5),
+            child: Text(
+              'Profile',
+              style: TextStyle(fontFamily: 'Sofia', fontSize: 22),
+            ),
+          ),
           leading: IconButton(
             icon: Icon(
               Icons.arrow_back,
@@ -628,6 +645,7 @@ class _ProfileState extends State<Profile> {
                               // mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Expanded(
+                                  // ignore: deprecated_member_use
                                   child: FlatButton(
                                     splashColor: primaryGreen.withOpacity(0.3),
                                     focusColor: primaryGreen.withOpacity(0.3),
@@ -672,6 +690,7 @@ class _ProfileState extends State<Profile> {
                                   ),
                                 ),
                                 Expanded(
+                                  // ignore: deprecated_member_use
                                   child: FlatButton(
                                     splashColor: primaryGreen.withOpacity(0.3),
                                     focusColor: primaryGreen.withOpacity(0.3),
@@ -716,6 +735,7 @@ class _ProfileState extends State<Profile> {
                             indent: 0,
                           ),
                           SizedBox(height: width * 0.02777),
+                          // ignore: deprecated_member_use
                           FlatButton(
                             onPressed: () {},
                             splashColor: primaryGreen.withOpacity(0.3),
@@ -743,6 +763,7 @@ class _ProfileState extends State<Profile> {
                               ),
                             ),
                           ),
+                          // ignore: deprecated_member_use
                           FlatButton(
                             onPressed: () {},
                             splashColor: primaryGreen.withOpacity(0.3),
@@ -770,6 +791,7 @@ class _ProfileState extends State<Profile> {
                               ),
                             ),
                           ),
+                          // ignore: deprecated_member_use
                           FlatButton(
                             onPressed: () {
                               // pushNewScreenWithRouteSettings(context,
@@ -813,12 +835,13 @@ class _ProfileState extends State<Profile> {
                           ),
                           Align(
                             alignment: Alignment.bottomCenter,
+                            // ignore: deprecated_member_use
                             child: FlatButton(
                               onPressed: () async {
                                 try {
                                   await FirebaseAuth.instance.signOut();
                                 } catch (e) {}
-
+                                cart.clear();
                                 Navigator.of(context, rootNavigator: true)
                                     .pushReplacement(MaterialPageRoute(
                                         builder: (context) => AuthScreen(

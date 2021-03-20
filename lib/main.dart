@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import 'package:food_ordering_app/screens/splash.dart';
 import 'package:food_ordering_app/utils/colors.dart';
@@ -16,13 +17,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     Firebase.initializeApp().then((value) {});
     return MaterialApp(
+        builder: EasyLoading.init(),
         title: 'Flutter Demo',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primarySwatch: customPrimaryColor,
-          textSelectionHandleColor: blue,
+          textSelectionTheme:
+              TextSelectionThemeData(selectionColor: blue, cursorColor: blue),
           indicatorColor: blue,
-          cursorColor: blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
         home: SplashScreen());
