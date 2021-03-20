@@ -64,11 +64,7 @@ class _ProfileState extends State<Profile> {
           });
         });
         LocalUser.userData.image = imagePath;
-        print('File Uploaded');
       } catch (e) {
-        print("Error is");
-        print(e);
-
         Fluttertoast.showToast(
           msg: 'not',
           toastLength: Toast.LENGTH_LONG,

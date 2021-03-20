@@ -3,7 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:food_ordering_app/user/localUser.dart';
 import 'package:food_ordering_app/utils/animatedNumber.dart';
 import 'package:food_ordering_app/utils/colors.dart';
 
@@ -713,7 +712,6 @@ class _ProductScreenState extends State<ProductScreen> {
                                 if (stap == false &&
                                     mtap == false &&
                                     ltap == false) {
-                                  print('select one');
                                   EasyLoading.showToast(
                                     'Please select size',
                                     duration: Duration(seconds: 2),
@@ -721,17 +719,6 @@ class _ProductScreenState extends State<ProductScreen> {
                                         EasyLoadingToastPosition.bottom,
                                     dismissOnTap: true,
                                   );
-                                  // fToast.showToast(
-                                  //     child: MyToast1.toast('Select Size'));
-                                  // Fluttertoast.showToast(
-                                  //   msg: "Please select size",
-                                  //   toastLength: Toast.LENGTH_LONG,
-                                  //   gravity: ToastGravity.BOTTOM,
-                                  //   timeInSecForIosWeb: 1,
-                                  //   backgroundColor: Colors.black,
-                                  //   textColor: Colors.white,
-                                  //   fontSize: 15,
-                                  // );
                                 } else {
                                   addToCart(widget.product.id);
                                 }
@@ -781,21 +768,15 @@ class _ProductScreenState extends State<ProductScreen> {
             : ltap == true
                 ? 'large'
                 : '';
-    print(size);
     if (cart.containsKey(docId) && widget.product['price'].runtimeType != int) {
       List abcd = cart.get(docId);
-      // print(abcd);
       for (int i = 0; i < abcd.length; i++) {
         if (abcd[i]['size'] == size) {
-          print(i);
           index = i;
         } else {}
       }
-      print("Index $index");
       if (index == null) {
         List map = cart.get(docId);
-        print(map);
-        print('were here');
         map.add({
           'size': widget.product['price'].runtimeType == int
               ? null
@@ -817,7 +798,6 @@ class _ProductScreenState extends State<ProductScreen> {
                       : '',
           'category': widget.category
         });
-        print(map);
         cart.put(docId, map).then((value) {
           cart.containsKey('totalQuantity')
               ? cart
@@ -855,346 +835,11 @@ class _ProductScreenState extends State<ProductScreen> {
           dismissOnTap: true,
         );
       }
-
-      // print(cart.get(docId)[1]['size']);
-      // print('already exists');
-      // print(cart.get(docId)[0]['size']);
-
-      // List map = cart.get(docId);
-      // print(map);
-      // map.add({
-      //   'size': widget.product['price'].runtimeType == int
-      //       ? null
-      //       : stap == true
-      //           ? 'small'
-      //           : mtap == true
-      //               ? 'medium'
-      //               : ltap == true
-      //                   ? 'large'
-      //                   : null,
-      //   'id': docId,
-      //   'quantity': quantity,
-      //   'price': widget.product['price']
-      // });
-      // cart.put(docId, map).then((value) {
-      //   cart.containsKey('totalQuantity')
-      //       ? cart
-      //           .put('totalQuantity', cart.get('totalQuantity') + quantity)
-      //           .then((value) {
-      //           setState(() {});
-      //         })
-      //       : cart.put('totalQuantity', quantity).then((value) {
-      //           setState(() {});
-      //         });
-      //   EasyLoading.showToast(
-      //     'Product Added',
-      //     duration: Duration(seconds: 2),
-      //     toastPosition: EasyLoadingToastPosition.bottom,
-      //     dismissOnTap: true,
-      //   );
-      // });
-
-      // for (int i = 0; i < cart.get(docId).toList().length; i++) {
-      //   if (cart.get(docId)[i]['size'] == 'small' && stap == true) {
-      //     // print('small exists at ${cart.get(docId)[i]}');
-      //     int quan = cart.get(docId)[i]['quantity'];
-      //     // print(cart.get(docId)[i]['quantity']);
-      //     int total = quan + quantity;
-      //     int check = 0;
-      //     cart.get(docId)[i]['quantity'] = total;
-      //     cart.containsKey('totalQuantity')
-      //         ? cart
-      //             .put('totalQuantity', cart.get('totalQuantity') + quantity)
-      //             .then((value) {
-      //             Fluttertoast.showToast(
-      //               msg: "Quantity increased",
-      //               toastLength: Toast.LENGTH_LONG,
-      //               gravity: ToastGravity.BOTTOM,
-      //               timeInSecForIosWeb: 3,
-      //               backgroundColor: Colors.black,
-      //               textColor: Colors.white,
-      //               fontSize: 15,
-      //             );
-      //             check++;
-      //             setState(() {
-      //               c++;
-      //             });
-      //           })
-      //         : cart.put('totalQuantity', quantity).then((value) {
-      //             Fluttertoast.showToast(
-      //               msg: "Quantity increased",
-      //               toastLength: Toast.LENGTH_LONG,
-      //               gravity: ToastGravity.BOTTOM,
-      //               timeInSecForIosWeb: 3,
-      //               backgroundColor: Colors.black,
-      //               textColor: Colors.white,
-      //               fontSize: 15,
-      //             );
-      //             check++;
-
-      //             setState(() {
-      //               c++;
-      //             });
-      //           });
-      //   } else if (cart.get(docId)[i]['size'] == 'medium' && mtap == true) {
-      //     // print('medium exists at ${cart.get(docId)[i]}');
-      //     int quan = cart.get(docId)[i]['quantity'];
-      //     int check = 0;
-      //     // print(cart.get(docId)[i]['quantity']);
-      //     int total = quan + quantity;
-      //     cart.get(docId)[i]['quantity'] = total;
-      //     cart.containsKey('totalQuantity')
-      //         ? cart
-      //             .put('totalQuantity', cart.get('totalQuantity') + quantity)
-      //             .then((value) {
-      //             Fluttertoast.showToast(
-      //               msg: "Quantity increased",
-      //               toastLength: Toast.LENGTH_LONG,
-      //               gravity: ToastGravity.BOTTOM,
-      //               timeInSecForIosWeb: 3,
-      //               backgroundColor: Colors.black,
-      //               textColor: Colors.white,
-      //               fontSize: 15,
-      //             );
-      //             check++;
-      //             setState(() {
-      //               c++;
-      //             });
-      //           })
-      //         : cart.put('totalQuantity', quantity).then((value) {
-      //             Fluttertoast.showToast(
-      //               msg: "Quantity increased",
-      //               toastLength: Toast.LENGTH_LONG,
-      //               gravity: ToastGravity.BOTTOM,
-      //               timeInSecForIosWeb: 3,
-      //               backgroundColor: Colors.black,
-      //               textColor: Colors.white,
-      //               fontSize: 15,
-      //             );
-      //             check++;
-      //             setState(() {
-      //               c++;
-      //             });
-      //           });
-      //   } else if (cart.get(docId)[i]['size'] == 'large' && ltap == true) {
-      //     // print('large exists at ${cart.get(docId)[i]}');
-      //     int quan = cart.get(docId)[i]['quantity'];
-      //     int check = 0;
-      //     // print(cart.get(docId)[i]['quantity']);
-      //     int total = quan + quantity;
-      //     cart.get(docId)[i]['quantity'] = total;
-      //     cart.containsKey('totalQuantity')
-      //         ? cart
-      //             .put('totalQuantity', cart.get('totalQuantity') + quantity)
-      //             .then((value) {
-      //             Fluttertoast.showToast(
-      //               msg: "Quantity increased",
-      //               toastLength: Toast.LENGTH_LONG,
-      //               gravity: ToastGravity.BOTTOM,
-      //               timeInSecForIosWeb: 3,
-      //               backgroundColor: Colors.black,
-      //               textColor: Colors.white,
-      //               fontSize: 15,
-      //             );
-      //             check++;
-      //             setState(() {
-      //               c++;
-      //             });
-      //           })
-      //         : cart.put('totalQuantity', quantity).then((value) {
-      //             Fluttertoast.showToast(
-      //               msg: "Quantity increased",
-      //               toastLength: Toast.LENGTH_LONG,
-      //               gravity: ToastGravity.BOTTOM,
-      //               timeInSecForIosWeb: 3,
-      //               backgroundColor: Colors.black,
-      //               textColor: Colors.white,
-      //               fontSize: 15,
-      //             );
-      //             check++;
-
-      //             setState(() {
-      //               c++;
-      //             });
-      //           });
-      //   } else if (stap == true && cart.get(docId)[i]['size'] != 'small' ||
-      //       mtap == true && cart.get(docId)[i]['size'] != 'medium' ||
-      //       ltap == true && cart.get(docId)[i]['size'] != 'large') {
-      //     // print('doest exists');
-
-      //     if (c == 0) {
-      //       List<Map<String, dynamic>> map = cart.get(docId);
-      //       // print(map);
-      //       map.add({
-      //         'size': widget.product['price'].runtimeType == int
-      //             ? null
-      //             : stap == true
-      //                 ? 'small'
-      //                 : mtap == true
-      //                     ? 'medium'
-      //                     : ltap == true
-      //                         ? 'large'
-      //                         : null,
-      //         'id': docId,
-      //         'quantity': quantity,
-      //         'price': widget.product['price']
-      //       });
-      //       cart.put(docId, map).then((value) {
-      //         cart.containsKey('totalQuantity')
-      //             ? cart
-      //                 .put(
-      //                     'totalQuantity', cart.get('totalQuantity') + quantity)
-      //                 .then((value) {
-      //                 setState(() {});
-      //               })
-      //             : cart.put('totalQuantity', quantity).then((value) {
-      //                 setState(() {});
-      //               });
-      //         Fluttertoast.showToast(
-      //           msg: "Product added",
-      //           toastLength: Toast.LENGTH_LONG,
-      //           gravity: ToastGravity.BOTTOM,
-      //           timeInSecForIosWeb: 3,
-      //           backgroundColor: Colors.black,
-      //           textColor: Colors.white,
-      //           fontSize: 15,
-      //         );
-      //       });
-      //     } else {}
-      //   }
-      // }
-      // // cart.get(docId).toList().forEach((e) {});
-      // // if (cart.get(docId)[0]['size'] == 'small' && stap == true) {
-      // //   print('small already exist');
-      // //   int quan = cart.get(docId)[0]['quantity'];
-      // //   print(cart.get(docId)[0]['quantity']);
-      // //   int total = quan + quantity;
-
-      // //   print("Total $total");
-      // //   cart.put(docId, [
-      // //     {
-      // //       'size': widget.product['price'].runtimeType == int
-      // //           ? null
-      // //           : stap == true
-      // //               ? 'small'
-      // //               : mtap == true
-      // //                   ? 'medium'
-      // //                   : ltap == true
-      // //                       ? 'large'
-      // //                       : null,
-      // //       'id': docId,
-      // //       'quantity': total,
-      // //       'price': widget.product['price']
-      // //     }
-      // //   ]).then((value) {
-      // //     cart.containsKey('totalQuantity')
-      // //         ? cart
-      // //             .put('totalQuantity', cart.get('totalQuantity') + quantity)
-      // //             .then((value) {
-      // //             setState(() {});
-      // //           })
-      // //         : cart.put('totalQuantity', quantity).then((value) {
-      // //             setState(() {});
-      // //           });
-      // //     Fluttertoast.showToast(
-      // //       msg: "Quantity increased",
-      // //       toastLength: Toast.LENGTH_LONG,
-      // //       gravity: ToastGravity.BOTTOM,
-      // //       timeInSecForIosWeb: 3,
-      // //       backgroundColor: Colors.black,
-      // //       textColor: Colors.white,
-      // //       fontSize: 15,
-      // //     );
-      // //   });
-
-      // //   print(cart.get(docId));
-      // // } else if (cart.get(docId)[0]['size'] == 'medium' && mtap == true) {
-      // //   print('medium already exist');
-      // // } else if (cart.get(docId)[0]['size'] == 'large' && ltap == true) {
-      // //   print('large already exist');
-      // // } else {
-      // //   print('not exist');
-      // //   // print(cart.get(docId));
-      // //   List<Map<String, dynamic>> map = cart.get(docId);
-      // //   print(map);
-      // //   map.add({
-      // //     'size': widget.product['price'].runtimeType == int
-      // //         ? null
-      // //         : stap == true
-      // //             ? 'small'
-      // //             : mtap == true
-      // //                 ? 'medium'
-      // //                 : ltap == true
-      // //                     ? 'large'
-      // //                     : null,
-      // //     'id': docId,
-      // //     'quantity': quantity,
-      // //     'price': widget.product['price']
-      // //   });
-      // //   print(map);
-      // //   cart.put(docId, map).then((value) {
-      // //     cart.containsKey('totalQuantity')
-      // //         ? cart
-      // //             .put('totalQuantity', cart.get('totalQuantity') + quantity)
-      // //             .then((value) {
-      // //             setState(() {});
-      // //           })
-      // //         : cart.put('totalQuantity', quantity).then((value) {
-      // //             setState(() {});
-      // //           });
-      // //     Fluttertoast.showToast(
-      // //       msg: "Product added",
-      // //       toastLength: Toast.LENGTH_LONG,
-      //       gravity: ToastGravity.BOTTOM,
-      //       timeInSecForIosWeb: 3,
-      //       backgroundColor: Colors.black,
-      //       textColor: Colors.white,
-      //       fontSize: 15,
-      //     );
-      //   });
-      // }
     } else if (cart.containsKey(docId) &&
         widget.product['price'].runtimeType == int) {
-      // print('hello');
       int quan = cart.get(docId)[0]['quantity'];
-
-      print('as');
       int total = quan + quantity;
       cart.get(docId)[0]['quantity'] = total;
-
-      // List map = cart.get(docId);
-      // print(map);
-      // map.add({
-      //   'size': widget.product['price'].runtimeType == int
-      //       ? null
-      //       : stap == true
-      //           ? 'small'
-      //           : mtap == true
-      //               ? 'medium'
-      //               : ltap == true
-      //                   ? 'large'
-      //                   : null,
-      //   'id': docId,
-      //   'quantity': quantity,
-      //   'price': widget.product['price']
-      // });
-      // cart.put(docId, map).then((value) {
-      //   cart.containsKey('totalQuantity')
-      //       ? cart
-      //           .put('totalQuantity', cart.get('totalQuantity') + quantity)
-      //           .then((value) {
-      //           setState(() {});
-      //         })
-      //       : cart.put('totalQuantity', quantity).then((value) {
-      //           setState(() {});
-      //         });
-      //   EasyLoading.showToast(
-      //     'Product Added',
-      //     duration: Duration(seconds: 2),
-      //     toastPosition: EasyLoadingToastPosition.bottom,
-      //     dismissOnTap: true,
-      //   );
-      // });
 
       cart.containsKey('totalQuantity')
           ? cart
@@ -1212,7 +857,6 @@ class _ProductScreenState extends State<ProductScreen> {
         dismissOnTap: true,
       );
     } else {
-      print('as1');
       cart.put(docId, [
         {
           'size': widget.product['price'].runtimeType == int

@@ -47,7 +47,6 @@ class _SignupState extends State<Signup> {
       setState(() {
         signUp = true;
       });
-      print(user.additionalUserInfo.username);
       var response =
           await http.get('https://api.genderize.io?name=${fname.text}');
       if (user != null) {
@@ -91,9 +90,7 @@ class _SignupState extends State<Signup> {
                             MaterialPageRoute(
                                 builder: (context) => AuthScreen(index: 0)),
                             (route) => false);
-                      } catch (e) {
-                        print(e);
-                      }
+                      } catch (e) {}
                     },
                   ),
                 ],
@@ -101,9 +98,7 @@ class _SignupState extends State<Signup> {
             }).then((value) async {
           try {
             await FirebaseAuth.instance.signOut();
-          } catch (e) {
-            print(e);
-          }
+          } catch (e) {}
           Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(builder: (context) => AuthScreen(index: 0)),
@@ -117,9 +112,7 @@ class _SignupState extends State<Signup> {
           gravity: ToastGravity.BOTTOM,
         );
       }
-    } catch (e) {
-      print("Error: " + e);
-    }
+    } catch (e) {}
     setState(() {
       isLoading = false;
     });

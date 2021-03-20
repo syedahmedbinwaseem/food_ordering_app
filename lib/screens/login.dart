@@ -68,9 +68,7 @@ class _LoginState extends State<Login> {
                 snap.data().containsKey('image')
                     ? LocalUser.userData.image = snap['image']
                     : LocalUser.userData.image = null;
-              } catch (e) {
-                print(e);
-              }
+              } catch (e) {}
             }
             Navigator.pushAndRemoveUntil(
                 context,
@@ -108,9 +106,7 @@ class _LoginState extends State<Login> {
                 fontSize: 15,
               );
             }
-          } catch (e) {
-            print("Error: " + e);
-          }
+          } catch (e) {}
         } else {
           setState(() {
             login = true;
@@ -131,7 +127,6 @@ class _LoginState extends State<Login> {
       setState(() {
         login = true;
       });
-      print(e);
     }
     setState(() {
       isLoading = false;

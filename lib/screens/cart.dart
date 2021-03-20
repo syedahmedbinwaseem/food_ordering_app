@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:food_ordering_app/screens/bottomNavigator.dart';
 import 'package:food_ordering_app/utils/colors.dart';
@@ -690,12 +689,6 @@ class _CartState extends State<Cart> {
             totalPrice = 0;
           });
           getProducts();
-          EasyLoading.showToast(
-            'Product Removed',
-            duration: Duration(seconds: 2),
-            toastPosition: EasyLoadingToastPosition.bottom,
-            dismissOnTap: true,
-          );
         } else {
           cart.delete(id);
           setState(() {
@@ -703,12 +696,6 @@ class _CartState extends State<Cart> {
             totalPrice = 0;
           });
           getProducts();
-          EasyLoading.showToast(
-            'Product Removed',
-            duration: Duration(seconds: 2),
-            toastPosition: EasyLoadingToastPosition.bottom,
-            dismissOnTap: true,
-          );
         }
       }
     });
@@ -716,11 +703,9 @@ class _CartState extends State<Cart> {
 
   void increaseQuantity(String map1, String id, int quantity, String size) {
     int index;
-    print('increase');
     List abcd = cart.get(id);
     for (int i = 0; i < abcd.length; i++) {
       if (abcd[i]['size'] == size) {
-        print(i);
         index = i;
       } else {}
     }
@@ -737,12 +722,6 @@ class _CartState extends State<Cart> {
         : cart.put('totalQuantity', quantity).then((value) {
             setState(() {});
           });
-    EasyLoading.showToast(
-      'Quantity Increased',
-      duration: Duration(seconds: 2),
-      toastPosition: EasyLoadingToastPosition.bottom,
-      dismissOnTap: true,
-    );
 
     setState(() {
       totalPrice = 0;
@@ -753,13 +732,10 @@ class _CartState extends State<Cart> {
   }
 
   void decreaseQuantity(String map1, String id, int quantity, String size) {
-    print('decrease');
     int index;
-    print('increase');
     List abcd = cart.get(id);
     for (int i = 0; i < abcd.length; i++) {
       if (abcd[i]['size'] == size) {
-        print(i);
         index = i;
       } else {}
     }
@@ -776,12 +752,6 @@ class _CartState extends State<Cart> {
         : cart.put('totalQuantity', quantity).then((value) {
             setState(() {});
           });
-    EasyLoading.showToast(
-      'Quantity Decreased',
-      duration: Duration(seconds: 2),
-      toastPosition: EasyLoadingToastPosition.bottom,
-      dismissOnTap: true,
-    );
 
     setState(() {
       totalPrice = 0;
