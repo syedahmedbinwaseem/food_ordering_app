@@ -10,6 +10,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:food_ordering_app/screens/authScreen.dart';
 import 'package:food_ordering_app/screens/bottomNavigator.dart';
 import 'package:food_ordering_app/screens/homeScreen.dart';
+import 'package:food_ordering_app/screens/myOrders.dart';
 import 'package:food_ordering_app/screens/signUp.dart';
 import 'package:food_ordering_app/user/localUser.dart';
 import 'package:food_ordering_app/utils/colors.dart';
@@ -129,315 +130,283 @@ class _ProfileState extends State<Profile> {
                   onTap: () {
                     FocusScope.of(context).unfocus();
                   },
-                  child: Stack(
-                    children: [
-                      SingleChildScrollView(
-                        child: Container(
-                          padding: EdgeInsets.all(20),
-                          color: Colors.white,
-                          height: MediaQuery.of(context).size.height - height,
-                          child: Form(
-                            key: fKey,
-                            child: SingleChildScrollView(
-                              child: Column(
-                                children: [
-                                  SizedBox(height: 20),
-                                  Center(
-                                    child: Stack(
-                                      children: [
-                                        Center(
-                                          child: Container(
-                                            height: width * 0.2777777,
-                                            width: width * 0.2777777,
+                  child: Container(
+                    padding: EdgeInsets.all(20),
+                    color: Colors.white,
+                    // height: MediaQuery.of(context).size.height - height,
+                    child: Form(
+                      key: fKey,
+                      child: Wrap(
+                        spacing: 20,
+                        children: [
+                          // SizedBox(height: 20),
+                          Center(
+                            child: Stack(
+                              children: [
+                                Center(
+                                  child: Container(
+                                    height: width * 0.2777777,
+                                    width: width * 0.2777777,
 
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                      width * 0.138888),
-                                              color:
-                                                  primaryGreen.withOpacity(0.3),
-                                            ),
-                                            // ignore: deprecated_member_use
-                                            child: FlatButton(
-                                              padding:
-                                                  LocalUser.userData.image ==
-                                                              null &&
-                                                          added == false &&
-                                                          _image == null
-                                                      ? EdgeInsets.all(10)
-                                                      : EdgeInsets.all(0),
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                        width * 0.138888),
-                                              ),
-                                              onHighlightChanged: (value) {
-                                                setState(() {
-                                                  imageValue = value;
-                                                });
-                                              },
-                                              onPressed: () {
-                                                getImage().then((value) {
-                                                  setState(() {});
-                                                });
-                                              },
-                                              child: ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          width * 0.138888),
-                                                  child: Center(
-                                                      child: LocalUser.userData
-                                                                      .image !=
-                                                                  null &&
-                                                              added == false
-                                                          ? CachedNetworkImage(
-                                                              imageUrl:
-                                                                  LocalUser
-                                                                      .userData
-                                                                      .image,
-                                                              fit: BoxFit.fill,
-                                                              progressIndicatorBuilder:
-                                                                  (context, url,
-                                                                          downloadProgress) =>
-                                                                      Center(
-                                                                child: SizedBox(
-                                                                  height: width *
-                                                                      0.09722,
-                                                                  width: width *
-                                                                      0.09722,
-                                                                  child: CircularProgressIndicator(
-                                                                      backgroundColor:
-                                                                          Colors
-                                                                              .white,
-                                                                      valueColor:
-                                                                          AlwaysStoppedAnimation<Color>(
-                                                                              primaryGreen),
-                                                                      strokeWidth:
-                                                                          3,
-                                                                      value: downloadProgress
-                                                                          .progress),
-                                                                ),
-                                                              ),
-                                                              errorWidget: (context,
-                                                                      url,
-                                                                      error) =>
-                                                                  Icon(Icons
-                                                                      .error),
-                                                            )
-                                                          : _image == null ||
-                                                                  _image.toString() ==
-                                                                      ''
-                                                              ? Image.asset(LocalUser
-                                                                          .userData
-                                                                          .gender ==
-                                                                      "male"
-                                                                  ? 'assets/images/man.png'
-                                                                  : 'assets/images/woman.png')
-                                                              : Image.file(
-                                                                  _image,
-                                                                  fit: BoxFit
-                                                                      .fill,
-                                                                ))),
-                                            ),
-                                          ),
-                                        ),
-                                        imageValue == true
-                                            ? Center(
-                                                child: Container(
-                                                  height: width * 0.2777777,
-                                                  width: width * 0.2777777,
-                                                  color: Colors.white
-                                                      .withOpacity(0.3),
-                                                  child: Center(
-                                                      child: Icon(Icons.edit)),
-                                                ),
-                                              )
-                                            : Container()
-                                      ],
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(
+                                          width * 0.138888),
+                                      color: primaryGreen.withOpacity(0.3),
                                     ),
-                                  ),
-                                  SizedBox(height: 20),
-                                  SizedBox(width: width * 0.04166),
-                                  Text(
-                                    LocalUser.userData.email,
-                                    style: TextStyle(
-                                        fontFamily: 'Sofia',
-                                        fontSize: width * 0.04166),
-                                  ),
-                                  SizedBox(height: 20),
-                                  TextFormField(
-                                    textCapitalization:
-                                        TextCapitalization.sentences,
-                                    keyboardType: TextInputType.text,
-                                    textInputAction: TextInputAction.next,
-                                    style: TextStyle(fontFamily: 'Sofia'),
-                                    validator: (value) {
-                                      return value.isEmpty
-                                          ? 'First name is required'
-                                          : null;
-                                    },
-                                    controller: fname,
-                                    decoration: InputDecoration(
-                                      errorStyle: TextStyle(
-                                          fontFamily: 'Sofia',
-                                          color: Colors.red,
-                                          fontSize: 14),
-                                      labelText: 'First Name',
-                                      labelStyle: TextStyle(
-                                          fontFamily: 'Sofia',
-                                          color: Colors.black,
-                                          fontSize: 14),
-                                    ),
-                                  ),
-                                  TextFormField(
-                                    textCapitalization:
-                                        TextCapitalization.sentences,
-                                    keyboardType: TextInputType.text,
-                                    textInputAction: TextInputAction.next,
-                                    style: TextStyle(fontFamily: 'Sofia'),
-                                    validator: (value) {
-                                      return value.isEmpty
-                                          ? 'Last name is required'
-                                          : null;
-                                    },
-                                    controller: lname,
-                                    decoration: InputDecoration(
-                                      errorStyle: TextStyle(
-                                          fontFamily: 'Sofia',
-                                          color: Colors.red,
-                                          fontSize: 14),
-                                      labelText: 'Last Name',
-                                      labelStyle: TextStyle(
-                                          fontFamily: 'Sofia',
-                                          color: Colors.black,
-                                          fontSize: 14),
-                                    ),
-                                  ),
-                                  TextFormField(
-                                    textInputAction: TextInputAction.done,
-                                    inputFormatters: <TextInputFormatter>[
-                                      FilteringTextInputFormatter.digitsOnly,
-                                      _mobileFormatter,
-                                      LengthLimitingTextInputFormatter(12),
-                                    ],
-                                    keyboardType:
-                                        TextInputType.numberWithOptions(),
-                                    style: TextStyle(fontFamily: 'Sofia'),
-                                    validator: (value) {
-                                      return value.isEmpty
-                                          ? 'Number is required'
-                                          : value.length < 12
-                                              ? 'Invalid number'
-                                              : null;
-                                    },
-                                    controller: phone,
-                                    decoration: InputDecoration(
-                                      errorStyle: TextStyle(
-                                          fontFamily: 'Sofia',
-                                          color: Colors.red,
-                                          fontSize: 14),
-                                      labelText: 'Phone',
-                                      labelStyle: TextStyle(
-                                          fontFamily: 'Sofia',
-                                          color: Colors.black,
-                                          fontSize: 14),
-                                    ),
-                                  ),
-                                  SizedBox(height: 20),
-                                  // ignore: deprecated_member_use
-                                  FlatButton(
-                                    onPressed: () async {
-                                      FocusScope.of(context).unfocus();
-                                      setState(() {
-                                        isLoading = true;
-                                      });
-                                      if (fKey.currentState.validate()) {
-                                        // logIn();
-                                        LocalUser.userData.firstName =
-                                            fname.text;
-                                        LocalUser.userData.lastName =
-                                            lname.text;
-                                        LocalUser.userData.phone = phone.text;
-                                        await uploadFile().then((value) {
-                                          // imagePath == null
-                                          //     ? null
-                                          //     : LocalUser.userData.image =
-                                          //         imagePath;
-
-                                          FirebaseFirestore.instance
-                                              .collection('user')
-                                              .doc(LocalUser.userData.email)
-                                              .update({
-                                            'firstName': fname.text,
-                                            'lastName': lname.text,
-                                            'phone': phone.text,
-                                            // imagePath == null ? null : 'image':
-                                            //     imagePath
-                                            'image': imagePath == null
-                                                ? LocalUser.userData.image
-                                                : imagePath
-                                          });
-                                          fToast.showToast(
-                                            child: ToastWidget.toast(
-                                                'Profile updated',
-                                                Icon(Icons.done, size: 20)),
-                                            toastDuration: Duration(seconds: 2),
-                                            gravity: ToastGravity.BOTTOM,
-                                          );
-                                          setState(() {
-                                            isLoading = false;
-                                          });
-                                          Navigator.pop(context);
-                                        });
-                                      } else {
+                                    // ignore: deprecated_member_use
+                                    child: FlatButton(
+                                      padding:
+                                          LocalUser.userData.image == null &&
+                                                  added == false &&
+                                                  _image == null
+                                              ? EdgeInsets.all(10)
+                                              : EdgeInsets.all(0),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(
+                                            width * 0.138888),
+                                      ),
+                                      onHighlightChanged: (value) {
                                         setState(() {
-                                          isLoading = false;
+                                          imageValue = value;
                                         });
-                                      }
-                                    },
-                                    height: 40,
-                                    color: primaryGreen,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                    child: Center(
-                                      child: isLoading == true
-                                          ? Container(
-                                              height: 40,
-                                              width: 40,
-                                              padding: EdgeInsets.all(10),
-                                              child: CircularProgressIndicator(
-                                                valueColor:
-                                                    AlwaysStoppedAnimation<
-                                                        Color>(Colors.white),
-                                              ),
-                                            )
-                                          : Text(
-                                              'SAVE',
-                                              style: TextStyle(
-                                                  fontFamily: 'Sofia',
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
+                                      },
+                                      onPressed: () {
+                                        getImage().then((value) {
+                                          setState(() {});
+                                        });
+                                      },
+                                      child: ClipRRect(
+                                          borderRadius: BorderRadius.circular(
+                                              width * 0.138888),
+                                          child: Center(
+                                              child: LocalUser.userData.image !=
+                                                          null &&
+                                                      added == false
+                                                  ? CachedNetworkImage(
+                                                      imageUrl: LocalUser
+                                                          .userData.image,
+                                                      fit: BoxFit.fill,
+                                                      progressIndicatorBuilder:
+                                                          (context, url,
+                                                                  downloadProgress) =>
+                                                              Center(
+                                                        child: SizedBox(
+                                                          height:
+                                                              width * 0.09722,
+                                                          width:
+                                                              width * 0.09722,
+                                                          child: CircularProgressIndicator(
+                                                              backgroundColor:
+                                                                  Colors.white,
+                                                              valueColor:
+                                                                  AlwaysStoppedAnimation<
+                                                                          Color>(
+                                                                      primaryGreen),
+                                                              strokeWidth: 3,
+                                                              value:
+                                                                  downloadProgress
+                                                                      .progress),
+                                                        ),
+                                                      ),
+                                                      errorWidget: (context,
+                                                              url, error) =>
+                                                          Icon(Icons.error),
+                                                    )
+                                                  : _image == null ||
+                                                          _image.toString() ==
+                                                              ''
+                                                      ? Image.asset(LocalUser
+                                                                  .userData
+                                                                  .gender ==
+                                                              "male"
+                                                          ? 'assets/images/man.png'
+                                                          : 'assets/images/woman.png')
+                                                      : Image.file(
+                                                          _image,
+                                                          fit: BoxFit.fill,
+                                                        ))),
                                     ),
                                   ),
-                                ],
+                                ),
+                                imageValue == true
+                                    ? Center(
+                                        child: Container(
+                                          height: width * 0.2777777,
+                                          width: width * 0.2777777,
+                                          color: Colors.white.withOpacity(0.3),
+                                          child:
+                                              Center(child: Icon(Icons.edit)),
+                                        ),
+                                      )
+                                    : Container()
+                              ],
+                            ),
+                          ),
+                          Center(
+                            child: Container(
+                              padding: EdgeInsets.only(top: 10),
+                              child: Text(
+                                LocalUser.userData.email,
+                                style: TextStyle(
+                                    fontFamily: 'Sofia',
+                                    fontSize: width * 0.04166),
                               ),
                             ),
                           ),
-                        ),
-                      ),
-                      isLoading == true
-                          ? Container(
-                              height:
-                                  MediaQuery.of(context).size.height - height,
-                              width: MediaQuery.of(context).size.width,
-                              color: Colors.transparent)
-                          : Container(
-                              height:
-                                  MediaQuery.of(context).size.height - height,
+                          SizedBox(height: 20),
+                          TextFormField(
+                            textCapitalization: TextCapitalization.sentences,
+                            keyboardType: TextInputType.text,
+                            textInputAction: TextInputAction.next,
+                            style: TextStyle(fontFamily: 'Sofia'),
+                            validator: (value) {
+                              return value.isEmpty
+                                  ? 'First name is required'
+                                  : null;
+                            },
+                            controller: fname,
+                            decoration: InputDecoration(
+                              errorStyle: TextStyle(
+                                  fontFamily: 'Sofia',
+                                  color: Colors.red,
+                                  fontSize: 14),
+                              labelText: 'First Name',
+                              labelStyle: TextStyle(
+                                  fontFamily: 'Sofia',
+                                  color: Colors.black,
+                                  fontSize: 14),
                             ),
-                    ],
+                          ),
+                          TextFormField(
+                            textCapitalization: TextCapitalization.sentences,
+                            keyboardType: TextInputType.text,
+                            textInputAction: TextInputAction.next,
+                            style: TextStyle(fontFamily: 'Sofia'),
+                            validator: (value) {
+                              return value.isEmpty
+                                  ? 'Last name is required'
+                                  : null;
+                            },
+                            controller: lname,
+                            decoration: InputDecoration(
+                              errorStyle: TextStyle(
+                                  fontFamily: 'Sofia',
+                                  color: Colors.red,
+                                  fontSize: 14),
+                              labelText: 'Last Name',
+                              labelStyle: TextStyle(
+                                  fontFamily: 'Sofia',
+                                  color: Colors.black,
+                                  fontSize: 14),
+                            ),
+                          ),
+                          TextFormField(
+                            textInputAction: TextInputAction.done,
+                            inputFormatters: <TextInputFormatter>[
+                              FilteringTextInputFormatter.digitsOnly,
+                              _mobileFormatter,
+                              LengthLimitingTextInputFormatter(12),
+                            ],
+                            keyboardType: TextInputType.numberWithOptions(),
+                            style: TextStyle(fontFamily: 'Sofia'),
+                            validator: (value) {
+                              return value.isEmpty
+                                  ? 'Number is required'
+                                  : value.length < 12
+                                      ? 'Invalid number'
+                                      : null;
+                            },
+                            controller: phone,
+                            decoration: InputDecoration(
+                              errorStyle: TextStyle(
+                                  fontFamily: 'Sofia',
+                                  color: Colors.red,
+                                  fontSize: 14),
+                              labelText: 'Phone',
+                              labelStyle: TextStyle(
+                                  fontFamily: 'Sofia',
+                                  color: Colors.black,
+                                  fontSize: 14),
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                          // ignore: deprecated_member_use
+                          FlatButton(
+                            onPressed: () async {
+                              FocusScope.of(context).unfocus();
+                              setState(() {
+                                isLoading = true;
+                              });
+                              if (fKey.currentState.validate()) {
+                                // logIn();
+                                LocalUser.userData.firstName = fname.text;
+                                LocalUser.userData.lastName = lname.text;
+                                LocalUser.userData.phone = phone.text;
+                                await uploadFile().then((value) {
+                                  // imagePath == null
+                                  //     ? null
+                                  //     : LocalUser.userData.image =
+                                  //         imagePath;
+
+                                  FirebaseFirestore.instance
+                                      .collection('user')
+                                      .doc(LocalUser.userData.email)
+                                      .update({
+                                    'firstName': fname.text,
+                                    'lastName': lname.text,
+                                    'phone': phone.text,
+                                    // imagePath == null ? null : 'image':
+                                    //     imagePath
+                                    'image': imagePath == null
+                                        ? LocalUser.userData.image
+                                        : imagePath
+                                  });
+                                  fToast.showToast(
+                                    child: ToastWidget.toast('Profile updated',
+                                        Icon(Icons.done, size: 20)),
+                                    toastDuration: Duration(seconds: 2),
+                                    gravity: ToastGravity.BOTTOM,
+                                  );
+                                  setState(() {
+                                    isLoading = false;
+                                  });
+                                  Navigator.pop(context);
+                                });
+                              } else {
+                                setState(() {
+                                  isLoading = false;
+                                });
+                              }
+                            },
+                            height: 40,
+                            color: primaryGreen,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            child: Center(
+                              child: isLoading == true
+                                  ? Container(
+                                      height: 40,
+                                      width: 40,
+                                      padding: EdgeInsets.all(10),
+                                      child: CircularProgressIndicator(
+                                        valueColor:
+                                            AlwaysStoppedAnimation<Color>(
+                                                Colors.white),
+                                      ),
+                                    )
+                                  : Text(
+                                      'SAVE',
+                                      style: TextStyle(
+                                          fontFamily: 'Sofia',
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
               );
@@ -750,7 +719,7 @@ class _ProfileState extends State<Profile> {
                                   ),
                                   SizedBox(width: width * 0.02777),
                                   Text(
-                                    'Your Favorites',
+                                    'My Favorites',
                                     style: TextStyle(
                                         fontFamily: 'Sofia',
                                         fontSize: width * 0.04722),
@@ -761,7 +730,11 @@ class _ProfileState extends State<Profile> {
                           ),
                           // ignore: deprecated_member_use
                           FlatButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.of(context, rootNavigator: true).push(
+                                  MaterialPageRoute(
+                                      builder: (context) => MyOrders()));
+                            },
                             splashColor: primaryGreen.withOpacity(0.3),
                             focusColor: primaryGreen.withOpacity(0.3),
                             highlightColor: primaryGreen.withOpacity(0.3),
@@ -778,7 +751,7 @@ class _ProfileState extends State<Profile> {
                                   ),
                                   SizedBox(width: width * 0.02777),
                                   Text(
-                                    'Order History',
+                                    'My Orders',
                                     style: TextStyle(
                                         fontFamily: 'Sofia',
                                         fontSize: width * 0.04722),

@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:food_ordering_app/screens/bottomNavigator.dart';
+import 'package:food_ordering_app/screens/checkout.dart';
 import 'package:food_ordering_app/utils/colors.dart';
 import 'package:hive/hive.dart';
 
@@ -13,7 +14,7 @@ class Cart extends StatefulWidget {
 
 class _CartState extends State<Cart> {
   Box cart;
-
+  bool delivery = false;
   Future openBox() async {
     await Hive.openBox('cart').then((value) {
       setState(() {
@@ -58,6 +59,9 @@ class _CartState extends State<Cart> {
 
   @override
   Widget build(BuildContext context) {
+    // cart.values.forEach((element) {
+    //   print(element);
+    // });
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -478,7 +482,6 @@ class _CartState extends State<Cart> {
                                                         borderRadius:
                                                             BorderRadius
                                                                 .circular(10),
-                                                        color: Colors.pink,
                                                       ),
                                                       child: ClipRRect(
                                                         borderRadius:
@@ -596,6 +599,57 @@ class _CartState extends State<Cart> {
                             }),
                       ),
                     ),
+                    Divider(
+                      height: 0,
+                      color: darkGreen,
+                      indent: 10,
+                      endIndent: 10,
+                    ),
+                    Container(
+                      height: 30,
+                      padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                      child: FlatButton(
+                        splashColor: primaryGreen.withOpacity(0.3),
+                        focusColor: primaryGreen.withOpacity(0.3),
+                        highlightColor: primaryGreen.withOpacity(0.3),
+                        onPressed: () {
+                          setState(() {
+                            delivery = !delivery;
+                          });
+                        },
+                        padding: EdgeInsets.all(0),
+                        height: 30,
+                        child: Container(
+                          height: 30,
+                          child: Center(
+                            child: Row(
+                              children: [
+                                Container(
+                                    // padding: EdgeInsets.all(10),
+                                    child: Checkbox(
+                                  value: delivery,
+                                  onChanged: (_) {
+                                    setState(() {
+                                      delivery = !delivery;
+                                    });
+                                  },
+                                )),
+                                Text(
+                                  'Add Delivery (+ Rs.50)',
+                                  style: TextStyle(fontFamily: 'Sofia'),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Divider(
+                      height: 1,
+                      color: darkGreen,
+                      indent: 10,
+                      endIndent: 10,
+                    ),
                     Container(
                       height: 150,
                       margin: const EdgeInsets.only(top: 6.0),
@@ -603,13 +657,13 @@ class _CartState extends State<Cart> {
                       padding: EdgeInsets.all(20),
                       decoration: BoxDecoration(
                         color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey,
-                            offset: Offset(0.0, 1.0), //(x,y)
-                            blurRadius: 4,
-                          ),
-                        ],
+                        // boxShadow: [
+                        //   BoxShadow(
+                        //     color: Colors.grey,
+                        //     offset: Offset(0.0, 1.0), //(x,y)
+                        //     blurRadius: 4,
+                        //   ),
+                        // ],
                       ),
                       child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -628,7 +682,9 @@ class _CartState extends State<Cart> {
                                                   .width *
                                               0.05)),
                                   TextSpan(
-                                      text: 'Rs. $totalPrice',
+                                      text: delivery == false
+                                          ? 'Rs. $totalPrice'
+                                          : 'Rs. ${totalPrice + 50}',
                                       style: TextStyle(
                                           fontFamily: 'Sofia',
                                           fontWeight: FontWeight.bold,
@@ -643,7 +699,17 @@ class _CartState extends State<Cart> {
                             SizedBox(height: 10),
                             // ignore: deprecated_member_use
                             FlatButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.of(context, rootNavigator: true)
+                                    .push(MaterialPageRoute(
+                                        builder: (context) => Checkout(
+                                              totalPrice: totalPrice,
+                                              delivery: delivery,
+                                              products: products,
+                                              totalQuantity:
+                                                  cart.get('totalQuantity'),
+                                            )));
+                              },
                               height: 40,
                               color: primaryGreen,
                               shape: RoundedRectangleBorder(
@@ -651,7 +717,7 @@ class _CartState extends State<Cart> {
                               ),
                               child: Center(
                                 child: Text(
-                                  'BUY NOW',
+                                  'CHECKOUT',
                                   style: TextStyle(
                                       fontFamily: 'Sofia',
                                       color: Colors.white,

@@ -6,6 +6,7 @@ import 'package:food_ordering_app/screens/productScreen.dart';
 import 'package:food_ordering_app/user/localUser.dart';
 import 'package:food_ordering_app/utils/colors.dart';
 import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 // ignore: must_be_immutable
 class AllProducts extends StatefulWidget {
@@ -126,21 +127,29 @@ class _AllProductsState extends State<AllProducts> {
                                   ? Container()
                                   : cart.get('totalQuantity') == 0
                                       ? Container()
-                                      : Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 2.0, top: 5),
-                                          child: CircleAvatar(
-                                            radius: 8.0,
-                                            backgroundColor: darkGreen,
-                                            foregroundColor: Colors.white,
-                                            child: Text(
-                                              "${cart.get('totalQuantity') == null ? 0 : cart.get("totalQuantity")}",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 10,
-                                                  fontFamily: 'Sofia'),
-                                            ),
-                                          ),
+                                      : ValueListenableBuilder(
+                                          valueListenable: cart.listenable(),
+                                          builder: (context, box, widget) {
+                                            return Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 2.0, top: 5),
+                                              child: CircleAvatar(
+                                                radius: 8.0,
+                                                backgroundColor: darkGreen,
+                                                foregroundColor: Colors.white,
+                                                child: Text(
+                                                  box
+                                                      .get('totalQuantity')
+                                                      .toString(),
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 10,
+                                                      fontFamily: 'Sofia'),
+                                                ),
+                                              ),
+                                            );
+                                          },
                                         ),
                             ])
                           ],

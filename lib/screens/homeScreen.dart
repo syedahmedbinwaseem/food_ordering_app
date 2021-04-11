@@ -347,25 +347,28 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                                                                             SizedBox(height: 10),
                                                                                             Align(
                                                                                               alignment: Alignment.center,
-                                                                                              child: Container(
-                                                                                                height: 150,
-                                                                                                width: 150,
-                                                                                                decoration: BoxDecoration(
-                                                                                                  borderRadius: BorderRadius.circular(75),
-                                                                                                ),
-                                                                                                child: ClipRRect(
-                                                                                                  borderRadius: BorderRadius.circular(75),
-                                                                                                  child: CachedNetworkImage(
-                                                                                                    imageUrl: snapshot.data.docs[index]['img_link'],
-                                                                                                    fit: BoxFit.cover,
-                                                                                                    progressIndicatorBuilder: (context, url, downloadProgress) => Center(
-                                                                                                      child: SizedBox(
-                                                                                                        height: 35,
-                                                                                                        width: 35,
-                                                                                                        child: CircularProgressIndicator(backgroundColor: Colors.white, valueColor: AlwaysStoppedAnimation<Color>(primaryGreen), strokeWidth: 3, value: downloadProgress.progress),
+                                                                                              child: Hero(
+                                                                                                tag: snapshot.data.docs[index].id,
+                                                                                                child: Container(
+                                                                                                  height: 150,
+                                                                                                  width: 150,
+                                                                                                  decoration: BoxDecoration(
+                                                                                                    borderRadius: BorderRadius.circular(75),
+                                                                                                  ),
+                                                                                                  child: ClipRRect(
+                                                                                                    borderRadius: BorderRadius.circular(75),
+                                                                                                    child: CachedNetworkImage(
+                                                                                                      imageUrl: snapshot.data.docs[index]['img_link'],
+                                                                                                      fit: BoxFit.cover,
+                                                                                                      progressIndicatorBuilder: (context, url, downloadProgress) => Center(
+                                                                                                        child: SizedBox(
+                                                                                                          height: 35,
+                                                                                                          width: 35,
+                                                                                                          child: CircularProgressIndicator(backgroundColor: Colors.white, valueColor: AlwaysStoppedAnimation<Color>(primaryGreen), strokeWidth: 3, value: downloadProgress.progress),
+                                                                                                        ),
                                                                                                       ),
+                                                                                                      errorWidget: (context, url, error) => Icon(Icons.error),
                                                                                                     ),
-                                                                                                    errorWidget: (context, url, error) => Icon(Icons.error),
                                                                                                   ),
                                                                                                 ),
                                                                                               ),
@@ -391,11 +394,14 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                                                                             ),
                                                                                             snapshot.data.docs[index]['price'].runtimeType == int ? Container() : SizedBox(height: 0),
                                                                                             Flexible(
-                                                                                              child: Align(
-                                                                                                alignment: Alignment.bottomLeft,
-                                                                                                child: Text(
-                                                                                                  snapshot.data.docs[index]['price'].runtimeType == int ? 'Rs. ${snapshot.data.docs[index]['price']}' : 'From Rs. ${snapshot.data.docs[index]['price'][0]}',
-                                                                                                  style: TextStyle(fontFamily: 'Sofia', fontSize: snapshot.data.docs[index]['price'].runtimeType == int ? 23 : 20),
+                                                                                              child: Hero(
+                                                                                                tag: snapshot.data.docs[index]['price'],
+                                                                                                child: Align(
+                                                                                                  alignment: Alignment.bottomLeft,
+                                                                                                  child: Text(
+                                                                                                    snapshot.data.docs[index]['price'].runtimeType == int ? 'Rs. ${snapshot.data.docs[index]['price']}' : 'From Rs. ${snapshot.data.docs[index]['price'][0]}',
+                                                                                                    style: TextStyle(fontFamily: 'Sofia', fontSize: snapshot.data.docs[index]['price'].runtimeType == int ? 23 : 20),
+                                                                                                  ),
                                                                                                 ),
                                                                                               ),
                                                                                             )
