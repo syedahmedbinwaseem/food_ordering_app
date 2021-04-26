@@ -30,6 +30,10 @@ class _CheckoutState extends State<Checkout> {
     });
   }
 
+  String dropdownValue;
+
+  List items = ['D Block', 'H Block', 'C Block', 'K Block', 'SSC'];
+
   @override
   void initState() {
     super.initState();
@@ -243,7 +247,7 @@ class _CheckoutState extends State<Checkout> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'Add Delivery Location',
+                                  'Select Delivery Location',
                                   style: TextStyle(
                                       fontFamily: 'Sofia',
                                       fontSize:
@@ -251,24 +255,49 @@ class _CheckoutState extends State<Checkout> {
                                               0.05),
                                 ),
                                 SizedBox(height: width * 0.03),
+                                Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  child: DropdownButtonHideUnderline(
+                                    child: DropdownButton(
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontFamily: 'Sofia'),
+                                        icon: Icon(
+                                          Icons.arrow_drop_down,
+                                          color: blue,
+                                        ),
+                                        value: dropdownValue,
+                                        hint: Text(
+                                          'Select an option',
+                                          style: TextStyle(
+                                              fontStyle: FontStyle.italic,
+                                              fontFamily: 'Sofia'),
+                                        ),
+                                        onChanged: (value) {
+                                          setState(() {
+                                            dropdownValue = value;
+                                          });
+                                        },
+                                        items: List.from(items)
+                                            .map<DropdownMenuItem<String>>(
+                                                (e) => DropdownMenuItem<String>(
+                                                    value: e, child: Text(e)))
+                                            .toList()),
+                                  ),
+                                ),
                                 Form(
                                   key: fKey,
                                   child: TextFormField(
                                     keyboardType: TextInputType.emailAddress,
                                     textInputAction: TextInputAction.next,
                                     style: TextStyle(fontFamily: 'Sofia'),
-                                    validator: (value) {
-                                      return value.isEmpty
-                                          ? 'Enter location'
-                                          : null;
-                                    },
                                     controller: location,
                                     decoration: InputDecoration(
                                       errorStyle: TextStyle(
                                           fontFamily: 'Sofia',
                                           color: Colors.red,
                                           fontSize: 14),
-                                      labelText: 'Location',
+                                      labelText: 'Add Comments',
                                       labelStyle: TextStyle(
                                           fontFamily: 'Sofia',
                                           color: Colors.black,
@@ -510,7 +539,8 @@ class _CheckoutState extends State<Checkout> {
           'totalItems': widget.totalQuantity,
           'orderNumber': orderNumber + 1,
           'orderBy': LocalUser.userData.email,
-          'status': 'received'
+          'status': 'received',
+          'delivery': false
         }).then((value) async {
           widget.products.forEach((element) async {
             ref.collection('products').doc().set({
@@ -554,6 +584,84 @@ class _CheckoutState extends State<Checkout> {
       print('self reserve');
     } else if (delivery == true && payment == 1) {
       print('delivery pay via wallet');
+      if (dropdownValue == '' || dropdownValue == null) {
+        EasyLoading.showToast(
+          'Select delivery location',
+          duration: Duration(seconds: 2),
+          toastPosition: EasyLoadingToastPosition.bottom,
+          dismissOnTap: true,
+        );
+        setState(() {
+          isLoading = false;
+        });
+      } else {
+        DocumentSnapshot checkFunds = await FirebaseFirestore.instance
+            .collection('user')
+            .doc(LocalUser.userData.email)
+            .get();
+        if (checkFunds['walletAmount'] < widget.totalPrice) {
+          setState(() {
+            isLoading = false;
+          });
+          EasyLoading.showToast(
+            'Not enough funds in wallet. Please recharge.',
+            duration: Duration(seconds: 2),
+            toastPosition: EasyLoadingToastPosition.bottom,
+            dismissOnTap: true,
+          );
+        } else {
+          DocumentReference ref =
+              FirebaseFirestore.instance.collection('orders').doc();
+          await ref.set({
+            'time': DateTime.now(),
+            'totalPrice': widget.totalPrice,
+            'totalItems': widget.totalQuantity,
+            'orderNumber': orderNumber + 1,
+            'orderBy': LocalUser.userData.email,
+            'status': 'received',
+            'delivery': true,
+            'location': dropdownValue,
+            'comments': location.text
+          }).then((value) async {
+            widget.products.forEach((element) async {
+              ref.collection('products').doc().set({
+                'id': element['id'],
+                'category': element['category'],
+                'quantity': element['quantity'],
+                'size': element['size'],
+                'price': element['price']
+              });
+            });
+            await FirebaseFirestore.instance
+                .collection('user')
+                .doc(LocalUser.userData.email)
+                .update(
+                    {'walletAmount': FieldValue.increment(-widget.totalPrice)});
+            await FirebaseFirestore.instance
+                .collection('products')
+                .doc('category')
+                .update({'ordernumber': orderNumber + 1});
+          }).then((value) {
+            setState(() {
+              isLoading = false;
+            });
+
+            showDialog(
+                barrierDismissible: false,
+                context: context,
+                builder: (context) {
+                  return SuccessDialog();
+                }).then((value) {
+              print('here');
+              cart.clear();
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => BottomNavigator()),
+                  (route) => false);
+            });
+          });
+        }
+      }
     } else if (delivery == true && payment == 2) {
       print('delivery reserve');
     }
