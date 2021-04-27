@@ -81,7 +81,7 @@ class JazzcashPayment {
     var url =
         'https://sandbox.jazzcash.com.pk/ApplicationAPI/API/Payment/DoTransaction';
 
-    Response response = await http.post(url, body: {
+    Response response = await http.post(Uri.parse(url), body: {
       "pp_Version": pp_ver,
       "pp_TxnType": pp_TxnType,
       "pp_Language": pp_Language,

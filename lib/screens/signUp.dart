@@ -47,8 +47,8 @@ class _SignupState extends State<Signup> {
       setState(() {
         signUp = true;
       });
-      var response =
-          await http.get('https://api.genderize.io?name=${fname.text}');
+      var response = await http
+          .get(Uri.parse("https://api.genderize.io?name=${fname.text}"));
       if (user != null) {
         FirebaseFirestore.instance.collection("user").doc("${email.text}").set({
           'created_at': Timestamp.now(),
