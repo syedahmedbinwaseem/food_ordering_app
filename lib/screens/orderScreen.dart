@@ -6,6 +6,7 @@ import 'package:food_ordering_app/utils/colors.dart';
 import 'package:im_stepper/stepper.dart';
 import 'package:intl/intl.dart';
 
+// ignore: must_be_immutable
 class OrderScreen extends StatefulWidget {
   DocumentSnapshot order;
   int check;
@@ -63,10 +64,6 @@ class _OrderScreenState extends State<OrderScreen> {
                             ),
                           ],
                         ),
-                        // Text(
-                        //   'Placed By: ' + widget.order['orderBy'],
-                        //   style: TextStyle(fontFamily: 'Sofia', fontSize: 18),
-                        // ),
                         SizedBox(height: 10),
                         Row(
                           children: [
@@ -84,7 +81,6 @@ class _OrderScreenState extends State<OrderScreen> {
                             ),
                           ],
                         ),
-
                         SizedBox(height: 10),
                         Row(
                           children: [
@@ -102,7 +98,6 @@ class _OrderScreenState extends State<OrderScreen> {
                             ),
                           ],
                         ),
-
                         SizedBox(height: 10),
                         Row(
                           children: [
@@ -239,6 +234,7 @@ class _OrderScreenState extends State<OrderScreen> {
                                                             padding:
                                                                 EdgeInsets.all(
                                                                     10),
+                                                            // ignore: deprecated_member_use
                                                             child: FlatButton(
                                                               shape: RoundedRectangleBorder(
                                                                   borderRadius:

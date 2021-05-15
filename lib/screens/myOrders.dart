@@ -83,6 +83,7 @@ class _MyOrdersState extends State<MyOrders> with TickerProviderStateMixin {
                                 itemBuilder: (context, index) {
                                   return Padding(
                                     padding: EdgeInsets.all(10),
+                                    // ignore: deprecated_member_use
                                     child: FlatButton(
                                       padding: EdgeInsets.all(0),
                                       onPressed: () {
@@ -227,6 +228,7 @@ class _MyOrdersState extends State<MyOrders> with TickerProviderStateMixin {
                                 itemBuilder: (context, index) {
                                   return Padding(
                                     padding: EdgeInsets.all(10),
+                                    // ignore: deprecated_member_use
                                     child: FlatButton(
                                       padding: EdgeInsets.all(0),
                                       onPressed: () {

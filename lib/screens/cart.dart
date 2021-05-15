@@ -608,6 +608,7 @@ class _CartState extends State<Cart> {
                     Container(
                       height: 30,
                       padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                      // ignore: deprecated_member_use
                       child: FlatButton(
                         splashColor: primaryGreen.withOpacity(0.3),
                         focusColor: primaryGreen.withOpacity(0.3),
