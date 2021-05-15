@@ -291,6 +291,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                                       .doc('category')
                                                       .collection(snapshot1
                                                           .data['types'][index])
+                                                      .where('status',
+                                                          isEqualTo:
+                                                              'available')
                                                       .snapshots(),
                                                   builder: (context,
                                                       AsyncSnapshot<

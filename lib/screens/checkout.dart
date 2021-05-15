@@ -382,7 +382,7 @@ class _CheckoutState extends State<Checkout> {
                                     child: Container(
                                       padding: EdgeInsets.only(bottom: 5),
                                       child: Checkbox(
-                                          value: payViaWallet,
+                                          value: true,
                                           onChanged: (_) {
                                             setState(() {
                                               reserve = false;
@@ -396,49 +396,49 @@ class _CheckoutState extends State<Checkout> {
                             ),
                           ),
                           // ignore: deprecated_member_use
-                          FlatButton(
-                            splashColor: primaryGreen.withOpacity(0.3),
-                            focusColor: primaryGreen.withOpacity(0.3),
-                            highlightColor: primaryGreen.withOpacity(0.3),
-                            onPressed: () {
-                              setState(() {
-                                payViaWallet = false;
-                                reserve = !reserve;
-                              });
-                            },
-                            child: Container(
-                              child: Row(
-                                children: [
-                                  Icon(
-                                    Icons.bookmark_border_outlined,
-                                    color: blue,
-                                  ),
-                                  SizedBox(width: width * 0.02777),
-                                  Text(
-                                    'Reserve order',
-                                    style: TextStyle(
-                                        fontFamily: 'Sofia',
-                                        fontSize: width * 0.04722),
-                                  ),
-                                  Spacer(),
-                                  Transform.scale(
-                                    scale: 0.8,
-                                    child: Container(
-                                      padding: EdgeInsets.only(bottom: 5),
-                                      child: Checkbox(
-                                          value: reserve,
-                                          onChanged: (_) {
-                                            setState(() {
-                                              payViaWallet = false;
-                                              reserve = !reserve;
-                                            });
-                                          }),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
+                          // FlatButton(
+                          //   splashColor: primaryGreen.withOpacity(0.3),
+                          //   focusColor: primaryGreen.withOpacity(0.3),
+                          //   highlightColor: primaryGreen.withOpacity(0.3),
+                          //   onPressed: () {
+                          //     setState(() {
+                          //       payViaWallet = false;
+                          //       reserve = !reserve;
+                          //     });
+                          //   },
+                          //   child: Container(
+                          //     child: Row(
+                          //       children: [
+                          //         Icon(
+                          //           Icons.bookmark_border_outlined,
+                          //           color: blue,
+                          //         ),
+                          //         SizedBox(width: width * 0.02777),
+                          //         Text(
+                          //           'Reserve order',
+                          //           style: TextStyle(
+                          //               fontFamily: 'Sofia',
+                          //               fontSize: width * 0.04722),
+                          //         ),
+                          //         Spacer(),
+                          //         Transform.scale(
+                          //           scale: 0.8,
+                          //           child: Container(
+                          //             padding: EdgeInsets.only(bottom: 5),
+                          //             child: Checkbox(
+                          //                 value: reserve,
+                          //                 onChanged: (_) {
+                          //                   setState(() {
+                          //                     payViaWallet = false;
+                          //                     reserve = !reserve;
+                          //                   });
+                          //                 }),
+                          //           ),
+                          //         )
+                          //       ],
+                          //     ),
+                          //   ),
+                          // ),
                         ],
                       ),
                     ),
@@ -447,37 +447,40 @@ class _CheckoutState extends State<Checkout> {
                     FlatButton(
                       onPressed: () {
                         if (widget.delivery == true) {
-                          if (fKey.currentState.validate()) {
-                            if (payViaWallet == false && reserve == false) {
-                              EasyLoading.showToast(
-                                'Select payment method',
-                                duration: Duration(seconds: 2),
-                                toastPosition: EasyLoadingToastPosition.bottom,
-                                dismissOnTap: true,
-                              );
-                            } else {
-                              if (payViaWallet == true) {
-                                checkout(true, 1);
-                              } else {
-                                checkout(true, 2);
-                              }
-                            }
-                          }
+                          checkout(true);
+                          // if (fKey.currentState.validate()) {
+                          //   if (payViaWallet == false && reserve == false) {
+                          //     EasyLoading.showToast(
+                          //       'Select payment method',
+                          //       duration: Duration(seconds: 2),
+                          //       toastPosition: EasyLoadingToastPosition.bottom,
+                          //       dismissOnTap: true,
+                          //     );
+                          //   } else {
+                          //     if (payViaWallet == true) {
+                          //       checkout(true);
+                          //     } else {
+                          //       checkout(true);
+                          //     }
+                          //   }
+                          // }
                         } else {
-                          if (payViaWallet == false && reserve == false) {
-                            EasyLoading.showToast(
-                              'Select payment method',
-                              duration: Duration(seconds: 2),
-                              toastPosition: EasyLoadingToastPosition.bottom,
-                              dismissOnTap: true,
-                            );
-                          } else {
-                            if (payViaWallet == true) {
-                              checkout(false, 1);
-                            } else {
-                              checkout(false, 2);
-                            }
-                          }
+                          checkout(false);
+                          //   if (payViaWallet == false && reserve == false) {
+                          //     EasyLoading.showToast(
+                          //       'Select payment method',
+                          //       duration: Duration(seconds: 2),
+                          //       toastPosition: EasyLoadingToastPosition.bottom,
+                          //       dismissOnTap: true,
+                          //     );
+                          //   } else {
+                          //     if (payViaWallet == true) {
+                          //       checkout(false);
+                          //     } else {
+                          //       checkout(false);
+                          //     }
+                          //   }
+                          // }
                         }
                       },
                       height: 40,
@@ -505,7 +508,7 @@ class _CheckoutState extends State<Checkout> {
     );
   }
 
-  void checkout(bool delivery, int payment) async {
+  void checkout(bool delivery) async {
     print('self pay via wallet');
     setState(() {
       isLoading = true;
@@ -518,7 +521,8 @@ class _CheckoutState extends State<Checkout> {
         .then((value) {
       orderNumber = value['ordernumber'];
     });
-    if (delivery == false && payment == 1) {
+    if (delivery == false) {
+      print('no delivery');
       DocumentSnapshot checkFunds = await FirebaseFirestore.instance
           .collection('user')
           .doc(LocalUser.userData.email)
@@ -592,9 +596,7 @@ class _CheckoutState extends State<Checkout> {
           });
         });
       }
-    } else if (delivery == false && payment == 2) {
-      print('self reserve');
-    } else if (delivery == true && payment == 1) {
+    } else if (delivery == true) {
       print('delivery pay via wallet');
       if (dropdownValue == '' || dropdownValue == null) {
         EasyLoading.showToast(
@@ -657,7 +659,16 @@ class _CheckoutState extends State<Checkout> {
             setState(() {
               isLoading = false;
             });
-
+            FirebaseFirestore.instance
+                .collection("user")
+                .doc(LocalUser.userData.email)
+                .collection('transactions')
+                .doc()
+                .set({
+              'amount': int.parse(widget.totalPrice.toString()),
+              'time': DateTime.now(),
+              'method': 'Checkout'
+            });
             showDialog(
                 barrierDismissible: false,
                 context: context,
@@ -674,8 +685,6 @@ class _CheckoutState extends State<Checkout> {
           });
         }
       }
-    } else if (delivery == true && payment == 2) {
-      print('delivery reserve');
     }
   }
 }

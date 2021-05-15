@@ -138,9 +138,12 @@ class _AllProductsState extends State<AllProducts> {
                                                 backgroundColor: darkGreen,
                                                 foregroundColor: Colors.white,
                                                 child: Text(
-                                                  box
-                                                      .get('totalQuantity')
-                                                      .toString(),
+                                                  box.get('totalQuantity') ==
+                                                          null
+                                                      ? '0'
+                                                      : box
+                                                          .get('totalQuantity')
+                                                          .toString(),
                                                   style: TextStyle(
                                                       fontWeight:
                                                           FontWeight.bold,
@@ -172,6 +175,7 @@ class _AllProductsState extends State<AllProducts> {
                     .collection('products')
                     .doc('category')
                     .collection(widget.category)
+                    .where('status', isEqualTo: 'available')
                     .snapshots(),
                 builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                   return !snapshot.hasData

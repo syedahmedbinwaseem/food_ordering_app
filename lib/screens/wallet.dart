@@ -229,7 +229,7 @@ class _WalletState extends State<Wallet> {
                                                                   ['method'] ==
                                                               'Checkout'
                                                           ? Text(
-                                                              '-Rs' +
+                                                              '-Rs ' +
                                                                   snapshot
                                                                       .data
                                                                       .docs[
@@ -246,7 +246,7 @@ class _WalletState extends State<Wallet> {
                                                               ),
                                                             )
                                                           : Text(
-                                                              '+Rs' +
+                                                              '+Rs ' +
                                                                   snapshot
                                                                       .data
                                                                       .docs[
