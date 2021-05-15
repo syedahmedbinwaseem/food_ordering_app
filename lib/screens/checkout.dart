@@ -351,6 +351,7 @@ class _CheckoutState extends State<Checkout> {
                                     MediaQuery.of(context).size.width * 0.05),
                           ),
                           SizedBox(height: width * 0.03),
+                          // ignore: deprecated_member_use
                           FlatButton(
                             splashColor: primaryGreen.withOpacity(0.3),
                             focusColor: primaryGreen.withOpacity(0.3),
@@ -394,6 +395,7 @@ class _CheckoutState extends State<Checkout> {
                               ),
                             ),
                           ),
+                          // ignore: deprecated_member_use
                           FlatButton(
                             splashColor: primaryGreen.withOpacity(0.3),
                             focusColor: primaryGreen.withOpacity(0.3),
@@ -441,6 +443,7 @@ class _CheckoutState extends State<Checkout> {
                       ),
                     ),
                     SizedBox(height: width * 0.05),
+                    // ignore: deprecated_member_use
                     FlatButton(
                       onPressed: () {
                         if (widget.delivery == true) {
@@ -564,7 +567,16 @@ class _CheckoutState extends State<Checkout> {
           setState(() {
             isLoading = false;
           });
-
+          FirebaseFirestore.instance
+              .collection("user")
+              .doc(LocalUser.userData.email)
+              .collection('transactions')
+              .doc()
+              .set({
+            'amount': int.parse(widget.totalPrice.toString()),
+            'time': DateTime.now(),
+            'method': 'Checkout'
+          });
           showDialog(
               barrierDismissible: false,
               context: context,

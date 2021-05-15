@@ -77,37 +77,40 @@ class _WalletState extends State<Wallet> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(height: 20),
-                        Container(
-                          child: Center(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              // crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Rs. ',
-                                  style: TextStyle(
-                                      fontFamily: 'Sofia',
-                                      fontSize: 40,
-                                      color: blue),
-                                ),
-                                AnimatedFlipCounter(
-                                  weight: FontWeight.normal,
-                                  duration: Duration(milliseconds: 500),
-                                  value: snapshot.data['walletAmount'],
+                        Center(
+                          child: Container(
+                            padding: EdgeInsets.symmetric(vertical: 10),
+                            width: width * 0.9,
+                            decoration: BoxDecoration(
+                              color: primaryGreen,
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            child: Center(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                // crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Rs. ',
+                                    style: TextStyle(
+                                        fontFamily: 'Sofia',
+                                        fontSize: 40,
+                                        color: blue),
+                                  ),
+                                  AnimatedFlipCounter(
+                                    weight: FontWeight.normal,
+                                    duration: Duration(milliseconds: 500),
+                                    value: snapshot.data['walletAmount'],
 
-                                  /* pass in a number like 2014 */
-                                  color: blue,
-                                  size: 60,
-                                ),
-                                SizedBox(width: 40),
-                              ],
+                                    /* pass in a number like 2014 */
+                                    color: blue,
+                                    size: 60,
+                                  ),
+                                  SizedBox(width: 40),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                        SizedBox(height: 20),
-                        Divider(
-                          thickness: 1,
-                          color: blue.withOpacity(0.3),
                         ),
                         SizedBox(height: 10),
                         Padding(
@@ -124,6 +127,7 @@ class _WalletState extends State<Wallet> {
                                   .collection('user')
                                   .doc(LocalUser.userData.email)
                                   .collection('transactions')
+                                  .orderBy('time', descending: true)
                                   .snapshots(),
                               builder: (context,
                                   AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -142,12 +146,125 @@ class _WalletState extends State<Wallet> {
                                                 snapshot.data.docs.length,
                                             itemBuilder: (context, index) {
                                               // ignore: deprecated_member_use
-                                              return FlatButton(
-                                                onPressed: () {},
-                                                child: Text(snapshot
-                                                    .data.docs[index]['amount']
-                                                    .toString()),
-                                                height: 50,
+                                              return Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 10,
+                                                        vertical: 7),
+                                                child: Container(
+                                                  padding: EdgeInsets.all(10),
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.grey[300],
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            15),
+                                                  ),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          snapshot.data.docs[
+                                                                          index]
+                                                                      [
+                                                                      'method'] ==
+                                                                  'Checkout'
+                                                              ? Text(
+                                                                  'Order',
+                                                                  style: TextStyle(
+                                                                      fontSize:
+                                                                          26,
+                                                                      fontFamily:
+                                                                          'Sofia'),
+                                                                )
+                                                              : Text(
+                                                                  'Topup',
+                                                                  style: TextStyle(
+                                                                      fontSize:
+                                                                          26,
+                                                                      fontFamily:
+                                                                          'Sofia'),
+                                                                ),
+                                                          SizedBox(
+                                                            height: 5,
+                                                          ),
+                                                          Text(
+                                                            snapshot
+                                                                    .data
+                                                                    .docs[index]
+                                                                        ['time']
+                                                                    .toDate()
+                                                                    .day
+                                                                    .toString() +
+                                                                '/' +
+                                                                snapshot
+                                                                    .data
+                                                                    .docs[index]
+                                                                        ['time']
+                                                                    .toDate()
+                                                                    .toString()
+                                                                    .substring(
+                                                                        5, 7) +
+                                                                ' | ' +
+                                                                snapshot
+                                                                    .data
+                                                                    .docs[index]
+                                                                        ['time']
+                                                                    .toDate()
+                                                                    .toString()
+                                                                    .substring(
+                                                                        10, 16),
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .grey[800]),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      snapshot.data.docs[index]
+                                                                  ['method'] ==
+                                                              'Checkout'
+                                                          ? Text(
+                                                              '-Rs' +
+                                                                  snapshot
+                                                                      .data
+                                                                      .docs[
+                                                                          index]
+                                                                          [
+                                                                          'amount']
+                                                                      .toString(),
+                                                              style: TextStyle(
+                                                                fontSize: 20,
+                                                                fontFamily:
+                                                                    'Sofia',
+                                                                color:
+                                                                    Colors.red,
+                                                              ),
+                                                            )
+                                                          : Text(
+                                                              '+Rs' +
+                                                                  snapshot
+                                                                      .data
+                                                                      .docs[
+                                                                          index]
+                                                                          [
+                                                                          'amount']
+                                                                      .toString(),
+                                                              style: TextStyle(
+                                                                fontSize: 20,
+                                                                fontFamily:
+                                                                    'Sofia',
+                                                                color: Colors
+                                                                    .green,
+                                                              ),
+                                                            ),
+                                                    ],
+                                                  ),
+                                                ),
                                               );
                                             },
                                           );
