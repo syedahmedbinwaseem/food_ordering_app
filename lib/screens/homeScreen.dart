@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
@@ -39,8 +41,31 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     openBox();
   }
 
+  void functiona() {
+    List<Map<String, dynamic>> distancesBetween = [];
+    distancesBetween.add({'name': "a", 'a': 5});
+    distancesBetween.add({'name': "aaa", 'a': 2});
+    distancesBetween.add({'name': "abcd", 'a': 1});
+
+    print(distancesBetween[0]['a']);
+
+    int smallest = distancesBetween[0]['a'];
+    var collectionPoint = distancesBetween[0];
+
+    distancesBetween.forEach((element) {
+      if (element['a'] > smallest) {
+        smallest = element['a'];
+        collectionPoint = element;
+      }
+    });
+
+    print(collectionPoint['name']);
+    // print(map['name']);
+  }
+
   @override
   Widget build(BuildContext context) {
+    functiona();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,

@@ -64,6 +64,7 @@ class _MyOrdersState extends State<MyOrders> with TickerProviderStateMixin {
                       .collection('orders')
                       .where('orderBy', isEqualTo: LocalUser.userData.email)
                       .where('status', isEqualTo: 'received')
+                      .where('status', isEqualTo: 'preparing')
                       .snapshots(),
                   builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                     return !snapshot.hasData
