@@ -11,8 +11,12 @@ import 'package:hive_flutter/hive_flutter.dart';
 // ignore: must_be_immutable
 class AllProducts extends StatefulWidget {
   String category;
+
   DocumentSnapshot user;
-  AllProducts({this.category, this.user});
+  AllProducts({
+    this.category,
+    this.user,
+  });
   @override
   _AllProductsState createState() => _AllProductsState();
 }
