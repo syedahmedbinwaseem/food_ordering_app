@@ -1,11 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cupertino_range_slider/cupertino_range_slider.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:food_ordering_app/screens/allProducts.dart';
-import 'package:food_ordering_app/screens/myOrders.dart';
 import 'package:food_ordering_app/screens/productScreen.dart';
 import 'package:food_ordering_app/screens/searchScreen.dart';
 import 'package:food_ordering_app/user/localUser.dart';
@@ -39,7 +37,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-
     openBox();
   }
 

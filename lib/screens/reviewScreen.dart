@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:food_ordering_app/user/localUser.dart';
 import 'package:food_ordering_app/utils/reviewSuccess.dart';
 import 'package:intl/intl.dart';
 
@@ -305,9 +304,9 @@ class _ReviewScreenState extends State<ReviewScreen> {
                                                                       snap.data[
                                                                               'reviewedBy']
                                                                           .toString()
-                                                                          .contains(LocalUser
-                                                                              .userData
-                                                                              .email)
+                                                                          .contains(widget
+                                                                              .order
+                                                                              .id)
                                                                   ? Center(
                                                                       child:
                                                                           Text(
@@ -351,14 +350,11 @@ class _ReviewScreenState extends State<ReviewScreen> {
                                                                             });
                                                                             await FirebaseFirestore.instance.collection('products').doc('category').collection(snapshot.data.docs[index]['category']).doc(snap.data.id).update({
                                                                               'reviewedBy': FieldValue.arrayUnion([
-                                                                                LocalUser.userData.email
+                                                                                widget.order.id
                                                                               ]),
                                                                               'review': FieldValue.arrayUnion([
-                                                                                'abcd'
+                                                                                controllers[index].text
                                                                               ])
-                                                                            });
-                                                                            setState(() {
-                                                                              isLoading = false;
                                                                             });
                                                                             showDialog(
                                                                                 barrierDismissible: false,
@@ -368,6 +364,10 @@ class _ReviewScreenState extends State<ReviewScreen> {
                                                                                 }).then((value) {
                                                                               Navigator.pop(context);
                                                                             });
+                                                                            setState(() {
+                                                                              isLoading = false;
+                                                                            });
+
                                                                             print(snap.data['name']);
                                                                           },
                                                                           child:

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:food_ordering_app/screens/productScreen.dart';
 import 'package:food_ordering_app/screens/reviewScreen.dart';
 import 'package:food_ordering_app/utils/colors.dart';
-import 'package:food_ordering_app/utils/reviewSuccess.dart';
 import 'package:im_stepper/stepper.dart';
 import 'package:intl/intl.dart';
 
@@ -380,31 +379,33 @@ class _OrderScreenState extends State<OrderScreen> {
                                         });
                               }),
                         ),
-                        // ignore: deprecated_member_use
-                        FlatButton(
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => ReviewScreen(
-                                          order: widget.order,
-                                        )));
-                          },
-                          height: 40,
-                          color: primaryGreen,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          child: Center(
-                            child: Text(
-                              'REVIEW ORDER',
-                              style: TextStyle(
-                                  fontFamily: 'Sofia',
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                        ),
+                        widget.order['status'] == 'completed'
+                            // ignore: deprecated_member_use
+                            ? FlatButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => ReviewScreen(
+                                                order: widget.order,
+                                              )));
+                                },
+                                height: 40,
+                                color: primaryGreen,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    'REVIEW ORDER',
+                                    style: TextStyle(
+                                        fontFamily: 'Sofia',
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              )
+                            : Container(),
                       ],
                     ),
                   ),
