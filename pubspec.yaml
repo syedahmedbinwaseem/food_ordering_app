@@ -52,6 +52,8 @@ dependencies:
   cupertino_range_slider: ^1.0.1
   firebase_messaging: ^10.0.3
   flutter_local_notifications: ^5.0.0+4
+  syncfusion_flutter_sliders: ^19.2.47
+  syncfusion_flutter_core: ^19.2.47
 
   
 dev_dependencies:

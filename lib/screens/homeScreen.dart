@@ -8,6 +8,7 @@ import 'package:food_ordering_app/screens/productScreen.dart';
 import 'package:food_ordering_app/screens/searchScreen.dart';
 import 'package:food_ordering_app/user/localUser.dart';
 import 'package:food_ordering_app/utils/colors.dart';
+import 'package:food_ordering_app/utils/filte.dart';
 import 'package:hive/hive.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 
@@ -218,29 +219,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10)),
                               onPressed: () {
-                                showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return StatefulBuilder(
-                                          builder: (context, setState) {
-                                        return Dialog(
-                                          child: Container(
-                                            height: 200,
-                                            width: 200,
-                                            color: Colors.yellow,
-                                            child: CupertinoRangeSlider(
-                                              minValue: 0, // Current min value
-                                              maxValue:
-                                                  100, // Current max value
-                                              min: 0, // Min range value
-                                              max: 100, // Max range value
-                                              onMinChanged: (minVal) {},
-                                              onMaxChanged: (maxVal) {},
-                                            ),
-                                          ),
-                                        );
-                                      });
-                                    });
+                                generateBottomSheet();
                               },
                               child: Container(
                                 child: Center(
@@ -523,6 +502,19 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           ),
         ),
       ),
+    );
+  }
+
+  generateBottomSheet() {
+    RangeValues values = RangeValues(1, 100);
+    RangeLabels labels = RangeLabels('1', "100");
+    showModalBottomSheet(
+      useRootNavigator: true,
+      isScrollControlled: true,
+      context: context,
+      builder: (context) {
+        return Filter();
+      },
     );
   }
 }
