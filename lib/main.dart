@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
     // Firebase.initializeApp().then((value) {});
     return MaterialApp(
         builder: EasyLoading.init(),
-        title: 'Flutter Demo',
+        title: 'Foodie',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primarySwatch: customPrimaryColor,
