@@ -547,7 +547,8 @@ class _CheckoutState extends State<Checkout> {
           'orderNumber': orderNumber + 1,
           'orderBy': LocalUser.userData.email,
           'status': 'received',
-          'delivery': false
+          'delivery': false,
+          'confirmReceived': false
         }).then((value) async {
           widget.products.forEach((element) async {
             ref.collection('products').doc().set({
@@ -635,7 +636,7 @@ class _CheckoutState extends State<Checkout> {
             'status': 'received',
             'delivery': true,
             'location': dropdownValue,
-            'comments': location.text
+            'comments': location.text,
           }).then((value) async {
             widget.products.forEach((element) async {
               ref.collection('products').doc().set({

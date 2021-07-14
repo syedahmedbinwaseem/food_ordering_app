@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:food_ordering_app/screens/bottomNavigator.dart';
@@ -46,6 +47,11 @@ class _LoginState extends State<Login> {
           .then((doc) async {
         if (doc.exists) {
           try {
+            FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
+
+            String fcmToken = await firebaseMessaging.getToken();
+            print('asda');
+
             // ignore: unused_local_variable
             UserCredential user = await mauth.signInWithEmailAndPassword(
                 email: email.text, password: password.text);
@@ -68,7 +74,13 @@ class _LoginState extends State<Login> {
                 snap.data().containsKey('image')
                     ? LocalUser.userData.image = snap['image']
                     : LocalUser.userData.image = null;
-              } catch (e) {}
+                FirebaseFirestore.instance
+                    .collection('user')
+                    .doc(email.text)
+                    .update({'fcm': fcmToken});
+              } catch (e) {
+                print(e);
+              }
             }
             Navigator.pushAndRemoveUntil(
                 context,

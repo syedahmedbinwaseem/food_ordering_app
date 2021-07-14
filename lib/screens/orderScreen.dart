@@ -2,15 +2,16 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:food_ordering_app/screens/productScreen.dart';
+import 'package:food_ordering_app/screens/reviewScreen.dart';
 import 'package:food_ordering_app/utils/colors.dart';
+import 'package:food_ordering_app/utils/reviewSuccess.dart';
 import 'package:im_stepper/stepper.dart';
 import 'package:intl/intl.dart';
 
 // ignore: must_be_immutable
 class OrderScreen extends StatefulWidget {
   DocumentSnapshot order;
-  int check;
-  OrderScreen({this.order, this.check});
+  OrderScreen({this.order});
   @override
   _OrderScreenState createState() => _OrderScreenState();
 }
@@ -378,6 +379,31 @@ class _OrderScreenState extends State<OrderScreen> {
                                                   });
                                         });
                               }),
+                        ),
+                        // ignore: deprecated_member_use
+                        FlatButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ReviewScreen(
+                                          order: widget.order,
+                                        )));
+                          },
+                          height: 40,
+                          color: primaryGreen,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: Center(
+                            child: Text(
+                              'REVIEW ORDER',
+                              style: TextStyle(
+                                  fontFamily: 'Sofia',
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
                         ),
                       ],
                     ),

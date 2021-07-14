@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:food_ordering_app/screens/userSeeAllReviews.dart';
 import 'package:food_ordering_app/utils/animatedNumber.dart';
 import 'package:food_ordering_app/utils/colors.dart';
 
@@ -366,6 +367,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                 widget.product['price'].runtimeType == int
                                     ? Container()
                                     : Container(
+                                        // color: Colors.pink,
                                         height:
                                             MediaQuery.of(context).size.width *
                                                 0.22,
@@ -374,7 +376,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                         // color: Colors.purple,
                                         child: Column(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
+                                              MainAxisAlignment.spaceBetween,
                                           children: [
                                             Text('Select Size',
                                                 style: TextStyle(
@@ -521,16 +523,42 @@ class _ProductScreenState extends State<ProductScreen> {
                                                   ),
                                                 ),
                                               ],
-                                            )
+                                            ),
                                           ],
                                         ),
+                                      ),
+                                widget.product.data().containsKey('review')
+                                    ? SizedBox(height: 30)
+                                    : Container(),
+                                widget.product.data().containsKey('review')
+                                    ? Center(
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        UserReviews(
+                                                          product:
+                                                              widget.product,
+                                                          category:
+                                                              widget.category,
+                                                        )));
+                                          },
+                                          child: Text(
+                                              'See all reviews (${widget.product['review'].length})',
+                                              style: TextStyle(
+                                                  fontFamily: 'Sofia',
+                                                  color: primaryGreen)),
+                                        ),
                                       )
+                                    : Container(),
                               ],
                             ),
                           ),
                         ),
                         Container(
-                          height: MediaQuery.of(context).size.width * 0.22222 +
+                          height: MediaQuery.of(context).size.width * 0.18 +
                               MediaQuery.of(context).size.width * 0.1944,
                           color: Colors.white,
                         )

@@ -63,8 +63,10 @@ class _MyOrdersState extends State<MyOrders> with TickerProviderStateMixin {
                   stream: FirebaseFirestore.instance
                       .collection('orders')
                       .where('orderBy', isEqualTo: LocalUser.userData.email)
-                      .where('status', isEqualTo: 'received')
-                      .where('status', isEqualTo: 'preparing')
+                      .where(
+                        'status',
+                        isNotEqualTo: 'completed',
+                      )
                       .snapshots(),
                   builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                     return !snapshot.hasData
@@ -210,6 +212,7 @@ class _MyOrdersState extends State<MyOrders> with TickerProviderStateMixin {
                       .collection('orders')
                       .where('orderBy', isEqualTo: LocalUser.userData.email)
                       .where('status', isEqualTo: 'completed')
+                      .orderBy('time', descending: true)
                       .snapshots(),
                   builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                     return !snapshot.hasData

@@ -1,11 +1,13 @@
-import 'dart:convert';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cupertino_range_slider/cupertino_range_slider.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:food_ordering_app/screens/allProducts.dart';
+import 'package:food_ordering_app/screens/myOrders.dart';
 import 'package:food_ordering_app/screens/productScreen.dart';
+import 'package:food_ordering_app/screens/searchScreen.dart';
 import 'package:food_ordering_app/user/localUser.dart';
 import 'package:food_ordering_app/utils/colors.dart';
 import 'package:hive/hive.dart';
@@ -41,40 +43,14 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     openBox();
   }
 
-  void functiona() {
-    List<Map<String, dynamic>> distancesBetween = [];
-    distancesBetween.add({'name': "a", 'a': 5});
-    distancesBetween.add({'name': "aaa", 'a': 2});
-    distancesBetween.add({'name': "abcd", 'a': 1});
-
-    print(distancesBetween[0]['a']);
-
-    int smallest = distancesBetween[0]['a'];
-    var collectionPoint = distancesBetween[0];
-
-    distancesBetween.forEach((element) {
-      if (element['a'] > smallest) {
-        smallest = element['a'];
-        collectionPoint = element;
-      }
-    });
-
-    print(collectionPoint['name']);
-    // print(map['name']);
-  }
-
   @override
   Widget build(BuildContext context) {
-    functiona();
+    FocusScope.of(context).unfocus();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
         automaticallyImplyLeading: false,
-        // leading: Container(
-        //   padding: EdgeInsets.fromLTRB(10, 19, 19, 19),
-        //   child: Image.asset('assets/images/four-dots.png'),
-        // ),
         actions: [
           LocalUser.userData.image == null
               ? Container(
@@ -203,26 +179,36 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                       width: MediaQuery.of(context).size.width,
                       child: Row(
                         children: [
-                          Container(
-                            padding: EdgeInsets.only(left: 5),
-                            width: MediaQuery.of(context).size.width * 0.75,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Colors.grey.withOpacity(0.2),
-                            ),
-                            child: TextField(
-                              textCapitalization: TextCapitalization.sentences,
-                              style: TextStyle(fontFamily: 'Sofia'),
-                              decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.only(top: 17),
-                                  prefixIcon: Icon(Icons.search),
-                                  border: InputBorder.none,
-                                  focusedBorder: InputBorder.none,
-                                  enabledBorder: InputBorder.none,
-                                  errorBorder: InputBorder.none,
-                                  disabledBorder: InputBorder.none,
-                                  hintText: 'Search',
-                                  hintStyle: TextStyle(fontFamily: 'Sofia')),
+                          Hero(
+                            tag: 'search',
+                            child: Container(
+                              padding: EdgeInsets.only(left: 5),
+                              width: MediaQuery.of(context).size.width * 0.75,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Colors.grey.withOpacity(0.2),
+                              ),
+                              child: TextField(
+                                autofocus: false,
+                                onTap: () {
+                                  FocusScope.of(context).unfocus();
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) => SearchScreen()));
+                                },
+                                textCapitalization:
+                                    TextCapitalization.sentences,
+                                style: TextStyle(fontFamily: 'Sofia'),
+                                decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.only(top: 17),
+                                    prefixIcon: Icon(Icons.search),
+                                    border: InputBorder.none,
+                                    focusedBorder: InputBorder.none,
+                                    enabledBorder: InputBorder.none,
+                                    errorBorder: InputBorder.none,
+                                    disabledBorder: InputBorder.none,
+                                    hintText: 'Search',
+                                    hintStyle: TextStyle(fontFamily: 'Sofia')),
+                              ),
                             ),
                           ),
                           SizedBox(
@@ -234,7 +220,31 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                               color: primaryGreen,
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10)),
-                              onPressed: () {},
+                              onPressed: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return StatefulBuilder(
+                                          builder: (context, setState) {
+                                        return Dialog(
+                                          child: Container(
+                                            height: 200,
+                                            width: 200,
+                                            color: Colors.yellow,
+                                            child: CupertinoRangeSlider(
+                                              minValue: 0, // Current min value
+                                              maxValue:
+                                                  100, // Current max value
+                                              min: 0, // Min range value
+                                              max: 100, // Max range value
+                                              onMinChanged: (minVal) {},
+                                              onMaxChanged: (maxVal) {},
+                                            ),
+                                          ),
+                                        );
+                                      });
+                                    });
+                              },
                               child: Container(
                                 child: Center(
                                   child:
