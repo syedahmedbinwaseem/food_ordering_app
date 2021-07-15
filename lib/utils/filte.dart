@@ -72,7 +72,13 @@ class _FilterState extends State<Filter> {
                   borderRadius: BorderRadius.circular(5),
                 ),
                 child: Center(
-                  child: Text('Search'),
+                  child: Text(
+                    'SEARCH',
+                    style: TextStyle(
+                        fontFamily: 'Sofia',
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold),
+                  ),
                 )),
             // RangeSlider(
             //   divisions: 5,

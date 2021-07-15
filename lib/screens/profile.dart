@@ -669,13 +669,26 @@ class _ProfileState extends State<Profile> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
                                           children: [
-                                            Text(
-                                              '${snapshot.data['orders']}',
-                                              style: TextStyle(
-                                                  fontFamily: 'Sofia',
-                                                  fontSize: width * 0.04,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
+                                            StreamBuilder(
+                                                stream: FirebaseFirestore
+                                                    .instance
+                                                    .collection('orders')
+                                                    .where('orderBy',
+                                                        isEqualTo: LocalUser
+                                                            .userData.email)
+                                                    .snapshots(),
+                                                builder: (context,
+                                                    AsyncSnapshot<QuerySnapshot>
+                                                        snapshot1) {
+                                                  return Text(
+                                                    '${snapshot1.data.docs.length}',
+                                                    style: TextStyle(
+                                                        fontFamily: 'Sofia',
+                                                        fontSize: width * 0.04,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  );
+                                                }),
                                             SizedBox(height: width * 0.01388),
                                             Text(
                                               'Orders',
