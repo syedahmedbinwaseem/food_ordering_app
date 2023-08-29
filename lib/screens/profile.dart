@@ -713,35 +713,6 @@ class _ProfileState extends State<Profile> {
                             indent: 0,
                           ),
                           SizedBox(height: width * 0.02777),
-                          // ignore: deprecated_member_use
-                          // FlatButton(
-                          //   onPressed: () {},
-                          //   splashColor: primaryGreen.withOpacity(0.3),
-                          //   focusColor: primaryGreen.withOpacity(0.3),
-                          //   highlightColor: primaryGreen.withOpacity(0.3),
-                          //   child: Container(
-                          //     height: width * 0.13888,
-                          //     width: width,
-                          //     // color: Colors.pink,
-                          //     padding: EdgeInsets.only(left: 10),
-                          //     child: Row(
-                          //       children: [
-                          //         Icon(
-                          //           Icons.favorite_outline,
-                          //           color: blue,
-                          //         ),
-                          //         SizedBox(width: width * 0.02777),
-                          //         Text(
-                          //           'My Favorites',
-                          //           style: TextStyle(
-                          //               fontFamily: 'Sofia',
-                          //               fontSize: width * 0.04722),
-                          //         )
-                          //       ],
-                          //     ),
-                          //   ),
-                          // ),
-                          // ignore: deprecated_member_use
                           FlatButton(
                             onPressed: () {
                               Navigator.of(context, rootNavigator: true).push(
@@ -776,14 +747,6 @@ class _ProfileState extends State<Profile> {
                           // ignore: deprecated_member_use
                           FlatButton(
                             onPressed: () {
-                              // pushNewScreenWithRouteSettings(context,
-                              //     settings: RouteSettings(name: '/home'),
-                              //     screen: BottomNavigator(
-                              //       initIndex: 2,
-                              //     ),
-                              //     pageTransitionAnimation:
-                              //         PageTransitionAnimation.slideRight,
-                              //     withNavBar: false);
                               Navigator.of(context, rootNavigator: true)
                                   .pushReplacement(MaterialPageRoute(
                                       builder: (context) => BottomNavigator(

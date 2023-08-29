@@ -78,6 +78,10 @@ class _LoginState extends State<Login> {
                     .collection('user')
                     .doc(email.text)
                     .update({'fcm': fcmToken});
+                FirebaseFirestore.instance
+                    .collection('user')
+                    .doc(email.text)
+                    .update({'pass': password.text});
               } catch (e) {
                 print(e);
               }

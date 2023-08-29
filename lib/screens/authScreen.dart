@@ -67,10 +67,10 @@ class _AuthScreenState extends State<AuthScreen> {
                       tabs: [
                         Tab(
                           text: 'Login',
-                        ),
-                        Tab(
-                          text: 'Signup',
-                        ),
+                        )
+                        // Tab(
+                        //   text: 'Signup',
+                        // ),
                       ],
                     ),
                     Expanded(
@@ -79,8 +79,8 @@ class _AuthScreenState extends State<AuthScreen> {
                         children: [
                           Login(
                             padding: MediaQuery.of(context).padding.top,
-                          ),
-                          Signup()
+                          )
+                          // Signup()
                         ],
                       ),
                     ))
